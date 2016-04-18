@@ -1,0 +1,43 @@
+{
+  "name": "Pikola.js",
+  "version": "0.0.1",
+  "description": "Library for advanced scheduling",
+  "main": "index.js",
+  "repository": "https://github.com/mkmarek/Pikola.js.git",
+  "scripts": {
+    "test": "gulp test",
+    "start": "gulp watch",
+    "cover": "gulp cover",
+    "build": "gulp build-scripts"
+  },
+  "keywords": [
+    "date",
+    "time",
+    "scheduling",
+    "calendar"
+  ],
+  "author": {
+    "name": "Marek Magdziak",
+    "email": "marek.magdziak@hotmail.cz",
+    "url": "https://github.com/mkmarek/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-preset-es2015": "^6.6.0",
+    "chai": "^3.4.1",
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-babel-istanbul": "^0.11.0",
+    "gulp-istanbul-report": "0.0.1",
+    "gulp-mocha": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "isparta": "^4.0.0",
+    "istanbul": "^0.4.1",
+    "merge2": "^0.3.6",
+    "mocha": "^2.3.4",
+    "remap-istanbul": "^0.5.1"
+  },
+  "dependencies": {}
+}
