@@ -62,16 +62,12 @@ export function addLayer(layer, opt) {
  * @return {Date}      Date of the next execution
  */
 function getFunction(opt, layerType, next) {
-  if (opt.layers.hasOwnProperty(layerType)) {
-    layerImpl[layerType].validate(opt.layers[layerType]);
+  layerImpl[layerType].validate(opt.layers[layerType]);
 
-    return (date, initialRun) => (
-      layerImpl[layerType].getNextExecution(
-        date, opt.layers, next, initialRun)
-      );
-  }
-
-  return null;
+  return (date, initialRun) => (
+    layerImpl[layerType].getNextExecution(
+      date, opt.layers, next, initialRun)
+    );
 }
 
 /**
