@@ -11,8 +11,7 @@ var gulp = require('gulp'),
   remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul'),
   istanbulReport = require('gulp-istanbul-report'),
   config = require('./gulpconfig'),
-  merge2 = require('merge2'),
-  coverageBadger = require('istanbul-cobertura-badger');
+  merge2 = require('merge2');
 
 
 function onError(err) {
