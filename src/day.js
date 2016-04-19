@@ -41,11 +41,9 @@ export function getNextExecution(date, layers, next, initialRun = true) {
     newDate.setDate(layer.interval);
   }
 
-  //clear all lower sections of the date
-  newDate.setHours(0);
-  newDate.setMinutes(0);
-  newDate.setSeconds(0);
-  newDate.setMilliseconds(0);
+  if (!initialRun && (layers[layerTypes.Hour].interval > 1 ||
+      layers[layerTypes.Hour].type != types.Every))
+      newDate.setHours(0);
 
   return newDate;
 }

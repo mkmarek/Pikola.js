@@ -9,5 +9,5 @@ module.exports = {
         testFilePattern: '/**/*.test.js'
     },
     babelPresets : ['es2015', 'stage-2'],
-    mochaReporter : 'nyan'
+    mochaReporter : 'spec'
 }

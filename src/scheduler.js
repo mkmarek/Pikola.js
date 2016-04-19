@@ -64,9 +64,9 @@ export function addLayer(layer, opt) {
 function getFunction(opt, layerType, next) {
   layerImpl[layerType].validate(opt.layers[layerType]);
 
-  return (date, initialRun) => (
+  return (date, initialRun, forceAdvance) => (
     layerImpl[layerType].getNextExecution(
-      date, opt.layers, next, initialRun)
+      date, opt.layers, next, initialRun, forceAdvance)
     );
 }
 
@@ -91,20 +91,18 @@ export function getExecutionDatesAfter(date, opt, num) {
 
   var i = 0;
   var dates = [];
-  var start = date;
+  var start = new Date(date);
 
-  //determin first date
-  date = getExecutionDateAfter(date, opt, true)
-
-  if (date != null) dates.push(date);
-
+  var i = 0
   while (dates.length < num && date) {
 
-    date = getExecutionDateAfter(date, opt)
+    date = getExecutionDateAfter(date, opt, !i)
 
-    if (date != null) {
+    if (date != null && date >= start) {
       dates.push(date);
     }
+
+    i++;
   }
 
   return dates;

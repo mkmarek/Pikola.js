@@ -26,12 +26,9 @@ export function getNextExecution(date, layers, next, initialRun = true) {
     throw 'Invalid occurence type for Month layer';
   }
 
-  //clear all lower sections of the date
-  newDate.setDate(1);
-  newDate.setHours(0);
-  newDate.setMinutes(0);
-  newDate.setSeconds(0);
-  newDate.setMilliseconds(0);
+  if (!initialRun && (layers[layerTypes.Day].interval > 1 ||
+      layers[layerTypes.Day].type != types.Every))
+      newDate.setDate(1);
 
   return newDate;
 }

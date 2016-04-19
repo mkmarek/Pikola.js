@@ -10,7 +10,7 @@ export function validate(layer) {
   if (isNaN(Number(layer.interval))) throw 'Hour interval is not specified';
 }
 
-export function getNextExecution(date, layers, next, initialRun = true) {
+export function getNextExecution(date, layers, next, initialRun = true, forceAdvance = false) {
 
 
   //Create a copy so we don't modify the original
@@ -26,23 +26,23 @@ export function getNextExecution(date, layers, next, initialRun = true) {
     ) && hours + layer.interval > MAX) return next(date, initialRun);
 
     //Increase by the specified interval
-    if (!initialRun) {
+    if (!initialRun || forceAdvance) {
       hours = newDate.getHours();
       newDate.setHours(hours + (layer.interval || 1));
     }
   } else if (layer.type == types.On) {
 
     //if the set occurence is somewhere in the past return null
-    if (initialRun || hours >= layer.interval) newDate = next(newDate, initialRun);
+    if (initialRun) newDate = next(newDate, initialRun);
+    else if (hours >= layer.interval) newDate = next(newDate, initialRun, true);
 
     //set the date to specific occurence
     newDate.setHours(layer.interval);
   }
 
-  //clear all lower sections of the date
-  newDate.setMinutes(0);
-  newDate.setSeconds(0);
-  newDate.setMilliseconds(0);
+  if (!initialRun && (layers[layerTypes.Minute].interval > 1 ||
+      layers[layerTypes.Minute].type != types.Every))
+      newDate.setMinutes(0);
 
   return newDate;
 }

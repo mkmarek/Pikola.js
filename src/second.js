@@ -10,7 +10,7 @@ export function validate(layer) {
   if (isNaN(Number(layer.interval))) throw 'Second interval is not specified';
 }
 
-export function getNextExecution(date, layers, next, initialRun = true) {
+export function getNextExecution(date, layers, next, initialRun = true, forceAdvance = false) {
 
   //Create a copy so we don't modify the original
   let newDate = new Date(date);
@@ -27,21 +27,23 @@ export function getNextExecution(date, layers, next, initialRun = true) {
       ) && secs + layer.interval > MAX)  newDate = next(date, initialRun);
 
     //Increase by the specified interval
-    if (!initialRun) {
+    if (!initialRun || forceAdvance) {
       secs = newDate.getSeconds();
       newDate.setSeconds(secs + (layer.interval || 1));
     }
   } else if (layer.type == types.On) {
 
     //if the set occurence is somewhere in the past return null
-    if (initialRun || secs >= layer.interval) newDate = next(date, initialRun);
+    if (initialRun) newDate = next(date, initialRun);
+    else if (secs >= layer.interval) newDate = next(newDate, initialRun, true);
 
     //set the date to specific occurence
     newDate.setSeconds(layer.interval);
   }
 
-  //clear all lower sections of the date
-  newDate.setMilliseconds(0);
+  if (!initialRun && (layers[layerTypes.Millisecond].interval > 1 ||
+      layers[layerTypes.Millisecond].type != types.Every))
+      newDate.setMilliseconds(0);
 
   return newDate;
 }
