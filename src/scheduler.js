@@ -65,9 +65,10 @@ function getFunction(opt, layerType, next) {
   if (opt.layers.hasOwnProperty(layerType)) {
     layerImpl[layerType].validate(opt.layers[layerType]);
 
-    return (date, initialRun) =>
+    return (date, initialRun) => (
       layerImpl[layerType].getNextExecution(
-        date, opt.layers, next, initialRun);
+        date, opt.layers, next, initialRun)
+      );
   }
 
   return null;
