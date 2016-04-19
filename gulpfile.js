@@ -7,28 +7,40 @@ var gulp = require('gulp'),
   isparta = require('isparta'),
   sourcemaps = require('gulp-sourcemaps'),
   path = require('path'),
+  injectModules = require('gulp-inject-modules'),
   remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul'),
   istanbulReport = require('gulp-istanbul-report'),
   config = require('./gulpconfig'),
-  merge2 = require('merge2');
+  merge2 = require('merge2'),
+  coverageBadger = require('istanbul-cobertura-badger');
+
+
+function onError(err) {
+  console.log(err);
+  this.emit('end');
+}
 
 gulp.task('build-scripts', ['clean'], function() {
   return gulp.src(config.paths.source + config.paths.sourceFilePattern)
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init({
+      loadMaps: true
+    }))
     .pipe(babel({
       presets: config.babelPresets
     }))
+    .on('error', onError)
     .pipe(sourcemaps.write('.', {
       sourceRoot: path.join(__dirname, config.paths.source)
     }))
-    .pipe(gulp.dest(path.join(config.paths.dist)));
+    .pipe(gulp.dest(path.join(config.paths.dist)))
 });
 
 gulp.task('build-tests', ['clean'], function() {
   return gulp.src(path.join(config.paths.source, config.paths.tests) + config.paths.testFilePattern)
     .pipe(babel({
-      presets: config.babelPreset
+      presets: config.babelPresets
     }))
+    .on('error', onError)
     .pipe(gulp.dest(path.join(config.paths.dist, config.paths.tests)));
 });
 
@@ -38,47 +50,40 @@ gulp.task('cover', ['build-scripts', 'build-tests'], function(cb) {
       config.paths.dist + config.paths.sourceFilePattern,
       '!' + path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern,
     ])
-    // Covering files
     .pipe(istanbul({
-      instrumenter: isparta.Instrumenter,
-      includeUntested: true
+      instrumenter: isparta.Instrumenter
     }))
-    // Force `require` to return covered files
-    .pipe(istanbul.hookRequire());
-
-  var reportStream = gulp.src([
-      path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern
-    ])
-    .pipe(mocha({
-      reporter: config.mochaReporter
-    }))
-    // Creating the reports after tests ran
-    .pipe(istanbul.writeReports({
-      reporters: ['json']
-    }))
-    .on('end', function() {
-      gulp.src(config.paths.coverage + '/coverage-final.json')
-        .pipe(remapIstanbul())
-        .pipe(istanbulReport({
-          reporterOpts: {
-            dir: config.paths.coverageHtmlReport
-          },
-          reporters: [{
-            'name': 'html',
-            file: 'report-html'
-          }]
+    .pipe(injectModules())
+    .on('finish', function() {
+      gulp.src(path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern)
+        .pipe(babel())
+        .pipe(injectModules())
+        .pipe(mocha({
+          reporter: config.mochaReporter
         }))
-        .on('finish', cb);
+        .pipe(istanbul.writeReports({
+          reporters: ['json']
+        }))
+        .on('end', function() {
+          gulp.src(config.paths.coverage + '/coverage-final.json')
+            .pipe(remapIstanbul({
+              reports: {
+                'json': config.paths.coverage + '/coverage.json',
+                'html': config.paths.coverage + '/html',
+                'lcovonly' : config.paths.coverage + '/lcov.info'
+              }
+            }))
+            .on('finish', cb);
+        });
     });
-
-  return merge2(coverFilesStream, reportStream);
 });
 
 gulp.task('test', ['build-scripts', 'build-tests'], function() {
   return gulp.src([path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern])
     .pipe(mocha({
       reporter: config.mochaReporter
-    }));
+    }))
+    .on('error', onError);
 });
 
 // Cleanall generated files

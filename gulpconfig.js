@@ -8,6 +8,6 @@ module.exports = {
         sourceFilePattern: '/**/*.js',
         testFilePattern: '/**/*.test.js'
     },
-    babelPresets : ['es2015'],
+    babelPresets : ['es2015', 'stage-2'],
     mochaReporter : 'nyan'
 }
