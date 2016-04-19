@@ -1,2 +1,2 @@
-export const On = Symbol('On recurrence type');
-export const Every = Symbol('Every recurrence type');
+export const On = 'On';
+export const Every = 'Every';
