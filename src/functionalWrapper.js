@@ -1,186 +1,44 @@
-import resolution from './resolution'
-import * as recurrence from './recurrence'
-import * as scheduler from './scheduler'
+import { getExecutionDatesAfter, create } from './scheduler'
+import * as functions from './functions'
 
-function EveryMillisecond(interval, opt) {
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Millisecond,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
+/**
+ * Composes all the defined functions and wraps them
+ * so they always return wrapper instead of options object
+ *
+ * @param  {Object} opt Options object
+ * @return {Object}     Object containing all the wrapped functions
+ */
+function wrapFunctions(opt) {
+  return Object.keys(functions)
+    .reduce((composed, f) => ({
+      ...composed,
+      [f]: (...args) => wrap(functions[f](...args, opt))
+    }), {})
 }
 
-function EverySecond(interval, opt) {
+/**
+ * Wraps options object with predefined functions
+ *
+ * @param  {Object} opt Options object
+ * @return {Object}     Object containing all the wrapped functions
+ */
+function wrap(opt) {
+  return {
+    ...wrapFunctions(opt),
 
-  opt = OnMillisecond(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Second,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
+    GetExecutionDatesAfter: (date, numberOfDates) =>
+      getExecutionDatesAfter(date, opt, numberOfDates)
+  }
 }
 
-function EveryMinute(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Minute,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function EveryHour(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Hour,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function EveryDay(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
-  opt = OnHour(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Day,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function EveryMonth(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
-  opt = OnHour(0, opt)
-  opt = OnDay(1, opt) //1 based
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Month,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function OnMillisecond(interval, opt) {
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Millisecond,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function OnSecond(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Second,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function OnMinute(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Minute,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function OnHour(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Hour,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function OnDay(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
-  opt = OnHour(0, opt)
-
-  const newOpt = scheduler.addLayer({
-    recurrence: resolution.Day,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-function GetExecutionDatesAfter(date, opt, numberOfDates) {
-  return scheduler.getExecutionDatesAfter(date, opt, numberOfDates)
-}
-
-const wrap = (opt) => ({
-  EveryMillisecond : (interval) => wrap(EveryMillisecond(interval, opt)),
-  EverySecond : (interval) => wrap(EverySecond(interval, opt)),
-  EveryMinute : (interval) => wrap(EveryMinute(interval, opt)),
-  EveryHour : (interval) => wrap(EveryHour(interval, opt)),
-  EveryDay : (interval) => wrap(EveryDay(interval, opt)),
-  EveryMonth : (interval) => wrap(EveryMonth(interval, opt)),
-
-  OnMillisecond : (interval) => wrap(OnMillisecond(interval, opt)),
-  OnSecond : (interval) => wrap(OnSecond(interval, opt)),
-  OnMinute : (interval) => wrap(OnMinute(interval, opt)),
-  OnHour : (interval) => wrap(OnHour(interval, opt)),
-  OnDay : (interval) => wrap(OnDay(interval, opt)),
-
-  GetExecutionDatesAfter : (date, numberOfDates) =>
-    GetExecutionDatesAfter(date, opt, numberOfDates)
-})
-
-export default function create() {
-  const opt = scheduler.create()
+/**
+ * Creates new trigger
+ *
+ * @return {Object} Wrapper over newly created triggerOut
+ *                  Exposing number of functions
+ */
+export default function () {
+  const opt = create()
 
   return wrap(opt)
 }

@@ -1,4 +1,4 @@
-import * as recurrence from '../recurrence'
+import recurrence from '../recurrence'
 import resolution from '../resolution'
 
 function isFunction(functionToCheck) {

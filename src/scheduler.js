@@ -1,5 +1,5 @@
 import resolution from './resolution'
-import * as recurrence from './recurrence'
+import recurrence from './recurrence'
 import resolutions from './resolutions/index'
 
 /**
@@ -54,11 +54,11 @@ export function addLayer(layer, opt) {
 }
 
 /**
- * [getExecutionDatesAfter description]
- * @param  {[type]} date [description]
- * @param  {[type]} opt  [description]
- * @param  {[type]} num  [description]
- * @return {[type]}      [description]
+ * Gets a number of dates which are based on defined options
+ * @param  {Date}        the date from which the first exection shall start
+ * @param  {Object} opt  schedule configuration
+ * @param  {Number} num  maximum number of dates which should be returned
+ * @return {Array}       array of dates describing future invocations
  */
 export function getExecutionDatesAfter(date, opt, num) {
 
@@ -80,10 +80,10 @@ export function getExecutionDatesAfter(date, opt, num) {
 /**
  * Gets the next possible execution based on the defined schedule and passed date
  *
- * @param  {Date} the date after execution
- * @param  {Object} opt  schedule configuration
- * @return {Date}      Date of the next execution or null when next execution
- *                     is not possible
+ * @param  {Date}         the date from which the first exection shall start
+ * @param  {Object} opt   schedule configuration
+ * @return {Date}         Date of the next execution or null when next execution
+ *                        is not possible
  */
 function getExecutionDateAfter(date, opt, initialRun = false) {
 
