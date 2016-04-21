@@ -19,14 +19,11 @@ function getDefaultLayerProps(resolution) {
  */
 export function create() {
   const options = {
-    layers: {
-      [resolution.Millisecond]: getDefaultLayerProps(resolution.Millisecond),
-      [resolution.Second]: getDefaultLayerProps(resolution.Second),
-      [resolution.Minute]: getDefaultLayerProps(resolution.Minute),
-      [resolution.Hour]: getDefaultLayerProps(resolution.Hour),
-      [resolution.Day]: getDefaultLayerProps(resolution.Day),
-      [resolution.Month]: getDefaultLayerProps(resolution.Month)
-    }
+    layers: Object.keys(resolution)
+      .reduce((composed, res) => ({
+        ...composed,
+        [resolution[res]]: getDefaultLayerProps(resolution[res])
+      }), {})
   }
 
   return options

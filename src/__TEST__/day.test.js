@@ -63,7 +63,7 @@ describe('Every 12th day in each month starting at ' +
 
     before(function() {
       trigger = scheduler()
-        .OnDay(12);
+        .OnDayOfMonth(12);
 
       d = new Date(2000, 1, 20, 0, 0, 0, 0);
       Object.freeze(d);
@@ -103,5 +103,57 @@ describe('Every 12th day in each month starting at ' +
     it('Sixth date should be on 12th of Aug', function() {
       dates[5].getDate().should.equal(12);
       dates[5].getMonth().should.equal(7);
+    });
+  });
+
+
+describe('Every 4th day in each week starting at ' +
+  new Date(2000, 1, 20, 0, 0, 0, 0),
+  function() {
+
+    let trigger, dates, d;
+
+    before(function() {
+      trigger = scheduler()
+        .OnDayOfWeek(4);
+
+      d = new Date(2000, 1, 20, 0, 0, 0, 0);
+      Object.freeze(d);
+
+      dates = trigger.GetExecutionDatesAfter(d, 6);
+    });
+
+    it('Should return a set of 6 dates', function() {
+      dates.length.should.equal(6);
+    });
+
+    it('First date should be on 25th of Feb', function() {
+      dates[0].getDate().should.equal(25);
+      dates[0].getMonth().should.equal(1);
+    });
+
+    it('Second date should be on 3rd of Mar', function() {
+      dates[1].getDate().should.equal(3);
+      dates[1].getMonth().should.equal(2);
+    });
+
+    it('Third date should be on 10th of Mar', function() {
+      dates[2].getDate().should.equal(10);
+      dates[2].getMonth().should.equal(2);
+    });
+
+    it('Fourth date should be on 17th of Mar', function() {
+      dates[3].getDate().should.equal(17);
+      dates[3].getMonth().should.equal(2);
+    });
+
+    it('Fifth date should be on 24th of Mar', function() {
+      dates[4].getDate().should.equal(24);
+      dates[4].getMonth().should.equal(2);
+    });
+
+    it('Sixth date should be on 31st of Mar', function() {
+      dates[5].getDate().should.equal(31);
+      dates[5].getMonth().should.equal(2);
     });
   });

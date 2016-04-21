@@ -55,9 +55,9 @@ gulp.task('build-tests', ['clean'], function() {
     .pipe(gulp.dest(path.join(config.paths.dist, config.paths.tests)));
 });
 
-gulp.task('cover', ['build-scripts', 'build-tests'], function(cb) {
+gulp.task('cover', ['build-scripts', 'build-tests'], function() {
 
-  var coverFilesStream = gulp.src([
+  return gulp.src([
       config.paths.dist + config.paths.sourceFilePattern,
       '!' + path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern,
     ])
@@ -65,8 +65,9 @@ gulp.task('cover', ['build-scripts', 'build-tests'], function(cb) {
       instrumenter: isparta.Instrumenter
     }))
     .pipe(injectModules())
+    .on('error', onError)
     .on('finish', function() {
-      gulp.src(path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern)
+      return gulp.src(path.join(config.paths.dist, config.paths.tests) + config.paths.testFilePattern)
         .pipe(babel())
         .pipe(injectModules())
         .pipe(mocha({
@@ -75,8 +76,9 @@ gulp.task('cover', ['build-scripts', 'build-tests'], function(cb) {
         .pipe(istanbul.writeReports({
           reporters: ['json']
         }))
+        .on('error', onError)
         .on('end', function() {
-          gulp.src(config.paths.coverage + '/coverage-final.json')
+          return gulp.src(config.paths.coverage + '/coverage-final.json')
             .pipe(remapIstanbul({
               reports: {
                 'json': config.paths.coverage + '/coverage.json',
@@ -84,7 +86,7 @@ gulp.task('cover', ['build-scripts', 'build-tests'], function(cb) {
                 'lcovonly' : config.paths.coverage + '/lcov.info'
               }
             }))
-            .on('finish', cb);
+            .on('error', onError);
         });
     });
 });

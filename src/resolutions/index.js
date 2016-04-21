@@ -7,6 +7,7 @@ import minute from './minute'
 import hour from './hour'
 import day from './day'
 import month from './month'
+import week from './week'
 
 const resolutions = [
   millisecond,
@@ -14,6 +15,7 @@ const resolutions = [
   minute,
   hour,
   day,
+  week,
   month
 ]
 

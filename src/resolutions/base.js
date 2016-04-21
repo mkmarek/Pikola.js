@@ -1,5 +1,9 @@
 import recurrence from '../recurrence'
 import resolution from '../resolution'
+import {
+  getIsoWeekFromDate,
+  getDateOfISOWeek
+} from '../utils'
 
 function isFunction(functionToCheck) {
   const getType = {}
@@ -8,9 +12,15 @@ function isFunction(functionToCheck) {
 
 function clear(date, res) {
   switch (res) {
-    case resolution.Day:
+    case resolution.Week:
       date.setDate(1)
       return
+    case resolution.Day:
+      {
+        const weeks = getIsoWeekFromDate(date)
+        date = getDateOfISOWeek(weeks, date.getFullYear())
+        return
+      }
     case resolution.Hour:
       date.setHours(0)
       return
@@ -49,14 +59,16 @@ export default function (config) {
     layers
   }) => (props) => {
 
+    function isDefault(res) {
+      return layers[res].interval <= 1 && layers[res].type == recurrence.Every
+    }
+
     function isLowerResolutionAndNotDefault(res) {
-      return resolution > res && (layers[res].interval > 1 ||
-        layers[res].type != recurrence.Every)
+      return resolution > layers[res].resolution && !isDefault(res)
     }
 
     function isHigherResolutionAndNotDefault(res) {
-      return resolution < res && (layers[res].interval > 1 ||
-        layers[res].type != recurrence.Every)
+      return resolution < layers[res].resolution && !isDefault(res)
     }
 
     const {
@@ -74,6 +86,15 @@ export default function (config) {
       interval
     } = layers[resolution]
 
+    //console.log(`Entering ${name} with ${date}`)
+
+    // if interval is null that means this layer is disabled
+    if (interval === null && isDefault(resolution) && next)
+      return next({
+        date,
+        initialRun
+      })
+
     if (!isNaN(Number(MIN)) && interval < MIN)
       throw `${name} interval can\`t be set lower than ${MIN}`
     if (!isNaN(Number(MAX)) && interval > MAX)
@@ -81,24 +102,38 @@ export default function (config) {
     if (isNaN(Number(interval)))
       throw `${name} interval is not specified`
 
+    //Iterate through layers and observer whether
+    //any of the higher layers are non-default and therefore
+    //whether it makes sense to visit them first
+    const isHigherResNonDefault = Object.keys(layers).reduce((c, e) => (
+      c || isHigherResolutionAndNotDefault(e)), false)
+
+    //Iterate through layers and determine whether
+    //is higher layer disabled
+    let isHigherLayerDisabled = false
+    Object.keys(layers).forEach(e => {
+      if (layers[e].resolution > resolution) {
+        if (layers[e].interval == null) isHigherLayerDisabled = true
+        return false
+      }
+      return true
+    })
+
     const maxValue = isFunction(MAX) ? MAX({
-      date
+      date,
+      isHigherResNonDefault
     }) : MAX
 
     if (type == recurrence.Every) {
 
-      //Iterate through layers and observer whether
-      //any of the higher layers are non-default and therefore
-      //whether it makes sense to visit them first
-      const shouldMoveForward = Object.keys(layers).reduce((c, e) =>
-        c || isHigherResolutionAndNotDefault(layers[e].resolution), false)
-
       //Get the next date part and add wanted interval
       const part = datepart({
-        date
+        date,
+        isHigherResNonDefault,
+        isHigherLayerDisabled
       }) + interval
 
-      if ((initialRun || shouldMoveForward && part > maxValue) && next)
+      if ((initialRun || isHigherResNonDefault && part > maxValue) && next)
         date = next({
           date,
           initialRun
@@ -114,7 +149,9 @@ export default function (config) {
     } else if (type == recurrence.On) {
 
       const part = datepart({
-        date
+        date,
+        isHigherResNonDefault,
+        isHigherLayerDisabled
       })
 
       //for initial run we're gonna go through all resolutions
@@ -136,7 +173,8 @@ export default function (config) {
       //setting up the defined date part
       date = on({
         date,
-        interval: interval
+        interval,
+        isHigherLayerDisabled
       })
     }
 
@@ -146,6 +184,8 @@ export default function (config) {
       isLowerResolutionAndNotDefault(layers[e].resolution) ?
       clear(date, layers[e].resolution) : true
     )
+
+    //console.log(`Leaving ${name} with ${date}`)
 
     return date
   }

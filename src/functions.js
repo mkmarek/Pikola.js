@@ -28,7 +28,6 @@ export function EverySecond(interval, opt) {
 
 export function EveryMinute(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
   opt = OnSecond(0, opt)
 
   const newOpt = addLayer({
@@ -42,8 +41,6 @@ export function EveryMinute(interval, opt) {
 
 export function EveryHour(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
   opt = OnMinute(0, opt)
 
   const newOpt = addLayer({
@@ -57,9 +54,6 @@ export function EveryHour(interval, opt) {
 
 export function EveryDay(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
   opt = OnHour(0, opt)
 
   const newOpt = addLayer({
@@ -71,13 +65,21 @@ export function EveryDay(interval, opt) {
   return newOpt
 }
 
-export function EveryMonth(interval, opt) {
+export function EveryWeek(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
-  opt = OnHour(0, opt)
-  opt = OnDay(1, opt) //1 based
+  opt = OnDayOfWeek(0, opt) //1 based
+
+  const newOpt = addLayer({
+    recurrence: resolution.Week,
+    type : recurrence.Every,
+    interval: interval
+  }, opt)
+
+  return newOpt
+}
+
+export function EveryMonth(interval, opt) {
+  opt = OnDayOfMonth(1, opt) //1 based
 
   const newOpt = addLayer({
     recurrence: resolution.Month,
@@ -114,7 +116,6 @@ export function OnSecond(interval, opt) {
 
 export function OnMinute(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
   opt = OnSecond(0, opt)
 
   const newOpt = addLayer({
@@ -128,8 +129,6 @@ export function OnMinute(interval, opt) {
 
 export function OnHour(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
   opt = OnMinute(0, opt)
 
   const newOpt = addLayer({
@@ -141,15 +140,38 @@ export function OnHour(interval, opt) {
   return newOpt
 }
 
-export function OnDay(interval, opt) {
+export function OnDayOfMonth(interval, opt) {
 
-  opt = OnMillisecond(0, opt)
-  opt = OnSecond(0, opt)
-  opt = OnMinute(0, opt)
+  opt = EveryWeek(null, opt) //disable week layer
+
+  const newOpt = addLayer({
+    recurrence: resolution.Day,
+    type : recurrence.On,
+    interval: interval
+  }, opt)
+
+  return newOpt
+}
+
+export function OnDayOfWeek(interval, opt) {
+
   opt = OnHour(0, opt)
 
   const newOpt = addLayer({
     recurrence: resolution.Day,
+    type : recurrence.On,
+    interval: interval
+  }, opt)
+
+  return newOpt
+}
+
+export function OnWeek(interval, opt) {
+
+  opt = OnDayOfWeek(0, opt)
+
+  const newOpt = addLayer({
+    recurrence: resolution.Week,
     type : recurrence.On,
     interval: interval
   }, opt)

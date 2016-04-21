@@ -11,7 +11,8 @@ describe('Every month on 2nd day on 22nd hour every 20 minutes starting at ' +
 
   before(function() {
     trigger = scheduler()
-      .OnDay(2) //on second day of that Month
+      .OnWeek(0)
+      .OnDayOfMonth(2) //on second day of that Month
       .OnHour(22) //at 22 hours
       .EveryMinute(20); //every 20 minutes in specified hour
 
@@ -19,7 +20,6 @@ describe('Every month on 2nd day on 22nd hour every 20 minutes starting at ' +
     Object.freeze(d);
 
     dates = trigger.GetExecutionDatesAfter(d, 5);
-    console.log(dates);
   });
 
   it('Should return a set of 5 dates', function() {

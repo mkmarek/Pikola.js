@@ -3,7 +3,8 @@ const Second = 2
 const Minute = 4
 const Hour = 8
 const Day = 16
-const Month = 32
+const Week = 32
+const Month = 64
 
 const resolution = {
   Millisecond,
@@ -11,6 +12,7 @@ const resolution = {
   Minute,
   Hour,
   Day,
+  Week,
   Month
 }
 

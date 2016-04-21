@@ -19,6 +19,7 @@ describe('Every 5 months starting at ' +
       Object.freeze(d);
 
       dates = trigger.GetExecutionDatesAfter(d, 6);
+      console.log(dates);
     });
 
     it('Should return a set of 6 dates', function() {
