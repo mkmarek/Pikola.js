@@ -1,8 +1,5 @@
 import scheduler from '../../index'
 
-import * as layers from '../recurrenceLayerTypes'
-import * as types from '../recurrenceTypes'
-
 import chai from 'chai'
 
 chai.should();

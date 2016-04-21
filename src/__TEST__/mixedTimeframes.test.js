@@ -1,8 +1,5 @@
 import scheduler from '../../index'
 
-import * as layers from '../recurrenceLayerTypes'
-import * as types from '../recurrenceTypes'
-
 import chai from 'chai'
 
 chai.should();
@@ -22,6 +19,7 @@ describe('Every month on 2nd day on 22nd hour every 20 minutes starting at ' +
     Object.freeze(d);
 
     dates = trigger.GetExecutionDatesAfter(d, 5);
+    console.log(dates);
   });
 
   it('Should return a set of 5 dates', function() {

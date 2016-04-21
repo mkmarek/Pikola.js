@@ -11,7 +11,8 @@ var gulp = require('gulp'),
   remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul'),
   istanbulReport = require('gulp-istanbul-report'),
   config = require('./gulpconfig'),
-  merge2 = require('merge2');
+  merge2 = require('merge2'),
+  eslint = require('gulp-eslint');
 
 
 function onError(err) {
@@ -19,7 +20,18 @@ function onError(err) {
   this.emit('end');
 }
 
-gulp.task('build-scripts', ['clean'], function() {
+
+gulp.task('lint', function () {
+    return gulp.src([
+      config.paths.source + config.paths.sourceFilePattern,
+      '!node_modules/**',
+      '!' + path.join(config.paths.source, config.paths.tests) + config.paths.testFilePattern])
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .pipe(eslint.failAfterError());
+});
+
+gulp.task('build-scripts', ['clean', 'lint'], function() {
   return gulp.src(config.paths.source + config.paths.sourceFilePattern)
     .pipe(sourcemaps.init({
       loadMaps: true
