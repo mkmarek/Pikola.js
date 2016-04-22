@@ -32,6 +32,21 @@ gulp.task('lint', function () {
         .pipe(eslint.failAfterError());
 });
 
+gulp.task('build-prod', ['clean'], function() {
+  return gulp.src(config.paths.source + config.paths.sourceFilePattern)
+    .pipe(sourcemaps.init({
+      loadMaps: true
+    }))
+    .pipe(babel({
+      presets: config.babelPresets
+    }))
+    .on('error', onError)
+    .pipe(sourcemaps.write('.', {
+      sourceRoot: path.join(__dirname, config.paths.source)
+    }))
+    .pipe(gulp.dest(path.join(config.paths.dist)))
+});
+
 gulp.task('build-scripts', ['clean', 'lint'], function() {
   return gulp.src(config.paths.source + config.paths.sourceFilePattern)
     .pipe(sourcemaps.init({

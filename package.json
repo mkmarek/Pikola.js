@@ -1,6 +1,6 @@
 {
   "name": "Pikola",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Library for advanced scheduling",
   "main": "index.js",
   "repository": "https://github.com/mkmarek/Pikola.js.git",
@@ -9,7 +9,7 @@
     "test": "node ./node_modules/gulp/bin/gulp cover",
     "start": "gulp watch",
     "build": "gulp build-scripts",
-    "install": "gulp build-scripts"
+    "postinstall": "gulp build-scripts"
   },
   "keywords": [
     "date",
