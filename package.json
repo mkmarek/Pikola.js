@@ -1,6 +1,6 @@
 {
-  "name": "pikola",
-  "version": "0.1.1",
+  "name": "Pikola",
+  "version": "0.1.0",
   "description": "Library for advanced scheduling",
   "main": "index.js",
   "repository": "https://github.com/mkmarek/Pikola.js.git",
@@ -34,15 +34,15 @@
     "eslint-config-rackt": "^1.1.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
-    "gulp-babel-istanbul": "^0.11.0",
+    "gulp-babel-istanbul": "^1.0.0",
     "gulp-eslint": "^2.0.0",
     "gulp-inject-modules": "^0.1.1",
     "gulp-istanbul-report": "0.0.1",
     "gulp-mocha": "^2.2.0",
-    "gulp-sourcemaps": "^1.6.0",
+    "gulp-sourcemaps": "^2.0.0-alpha",
     "isparta": "^4.0.0",
     "istanbul": "^0.4.3",
-    "merge2": "^0.3.6",
+    "merge2": "^1.0.2",
     "mocha": "^2.3.4",
     "remap-istanbul": "^0.6.3"
   }
