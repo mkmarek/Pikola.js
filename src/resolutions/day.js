@@ -1,4 +1,5 @@
 import resolution from '../resolution'
+import recurrence from '../recurrence'
 
 import {
   getIsoWeekFromDate,
@@ -7,11 +8,19 @@ import {
 
 export default {
 
-  MIN: 0,
-  MAX: () => 7,
+  MAX: ({
+    date,
+    layers
+  }) => {
+    if (layers[resolution.Week].type == recurrence.Every && layers[resolution.Week].interval > 1) {
+      return 7 //7 days in a week
+    }
+    else if (layers[resolution.Month].type == recurrence.Every && layers[resolution.Month].interval > 1) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() //get total days of specified month
+    }
+  },
 
   resolution: resolution.Day,
-  name: 'Day',
 
   datepart: ({
     date,
@@ -24,7 +33,7 @@ export default {
       const weeks = getIsoWeekFromDate(date)
       const weekStart = getDateOfISOWeek(weeks, date.getFullYear())
 
-      return date.getTime() - weekStart.getTime() / 604800000 //total days
+      return (date - weekStart) / 86400000  //total days
     }
   },
 
@@ -49,7 +58,7 @@ export default {
     const result = new Date(date)
 
     if (isHigherLayerDisabled) {
-      result.setDate(interval)
+      result.setDate(interval + 1)
     }
     else {
       const weeks = getIsoWeekFromDate(result)

@@ -17,6 +17,33 @@ testCase({
 });
 
 testCase({
+  description : 'Every 3 weeks every three days in those weeks',
+  start : new Date(2000, 1, 3, 0, 0, 0, 0),
+  expectedDates : [
+
+    new Date(2000, 1, 3, 0, 0, 0, 0),
+    new Date(2000, 1, 6, 0, 0, 0, 0),
+
+    new Date(2000, 1, 21, 0, 0, 0, 0),
+    new Date(2000, 1, 24, 0, 0, 0, 0),
+    new Date(2000, 1, 27, 0, 0, 0, 0),
+
+    new Date(2000, 2, 13, 0, 0, 0, 0),
+    new Date(2000, 2, 16, 0, 0, 0, 0),
+    new Date(2000, 2, 19, 0, 0, 0, 0),
+
+    new Date(2000, 3, 3, 0, 0, 0, 0),
+    new Date(2000, 3, 6, 0, 0, 0, 0),
+    new Date(2000, 3, 9, 0, 0, 0, 0),
+
+    new Date(2000, 3, 24, 0, 0, 0, 0),
+    new Date(2000, 3, 27, 0, 0, 0, 0),
+    new Date(2000, 3, 30, 0, 0, 0, 0),
+  ],
+  trigger : scheduler().EveryWeek(3).EveryDay(3)
+});
+
+testCase({
   description : 'Every 3rd week in a month',
   start : new Date(2000, 1, 1, 0, 0, 0, 0),
   expectedDates : [

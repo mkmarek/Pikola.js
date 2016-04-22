@@ -17,6 +17,21 @@ testCase({
 });
 
 testCase({
+  description : 'Every 2500 milliseconds',
+  start : new Date(2000, 1, 1, 0, 0, 0, 1),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 1),
+    new Date(2000, 1, 1, 0, 0, 2, 501),
+    new Date(2000, 1, 1, 0, 0, 5, 1),
+    new Date(2000, 1, 1, 0, 0, 7, 501),
+    new Date(2000, 1, 1, 0, 0, 10, 1),
+    new Date(2000, 1, 1, 0, 0, 12, 501),
+    new Date(2000, 1, 1, 0, 0, 15, 1),
+  ],
+  trigger : scheduler().EveryMillisecond(2500)
+});
+
+testCase({
   description : 'On 250th millisecond of each second',
   start : new Date(2000, 1, 1, 0, 0, 0, 300),
   expectedDates : [

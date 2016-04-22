@@ -2,11 +2,9 @@ import resolution from '../resolution'
 
 export default {
 
-  MIN: 0,
   MAX: 999,
 
   resolution: resolution.Millisecond,
-  name: 'Millisecond',
 
   datepart: ({
     date

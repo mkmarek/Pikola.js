@@ -2,11 +2,9 @@ import resolution from '../resolution'
 
 export default {
 
-  MIN: 0,
   MAX: 59,
 
   resolution: resolution.Minute,
-  name: 'Minute',
 
   datepart: ({
     date

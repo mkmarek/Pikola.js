@@ -2,10 +2,7 @@ import resolution from '../resolution'
 
 export default {
 
-  MIN: 0,
-
   resolution: resolution.Month,
-  name: 'Month',
 
   datepart: ({
     date

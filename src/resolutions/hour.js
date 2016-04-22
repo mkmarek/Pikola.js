@@ -2,11 +2,9 @@ import resolution from '../resolution'
 
 export default {
 
-  MIN: 0,
   MAX: 23,
 
   resolution: resolution.Hour,
-  name: 'Hour',
 
   datepart: ({
     date

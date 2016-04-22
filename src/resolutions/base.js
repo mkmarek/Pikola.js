@@ -47,8 +47,6 @@ export default function (config) {
 
   const {
     MAX,
-    MIN,
-    name,
     every,
     on,
     datepart,
@@ -64,11 +62,13 @@ export default function (config) {
     }
 
     function isLowerResolutionAndNotDefault(res) {
-      return resolution > layers[res].resolution && !isDefault(res)
+      return resolution > layers[res].resolution &&
+        (!isDefault(res) || layers[res].interval == null)
     }
 
     function isHigherResolutionAndNotDefault(res) {
-      return resolution < layers[res].resolution && !isDefault(res)
+      return resolution < layers[res].resolution &&
+        (!isDefault(res) || layers[res].interval == null)
     }
 
     const {
@@ -86,7 +86,7 @@ export default function (config) {
       interval
     } = layers[resolution]
 
-    //console.log(`Entering ${name} with ${date}`)
+    //console.log(`Entering ${resolution} with ${date}`)
 
     // if interval is null that means this layer is disabled
     if (interval === null && isDefault(resolution) && next)
@@ -94,13 +94,6 @@ export default function (config) {
         date,
         initialRun
       })
-
-    if (!isNaN(Number(MIN)) && interval < MIN)
-      throw `${name} interval can\`t be set lower than ${MIN}`
-    if (!isNaN(Number(MAX)) && interval > MAX)
-      throw `${name} interval can\`t be set higher than ${MAX}`
-    if (isNaN(Number(interval)))
-      throw `${name} interval is not specified`
 
     //Iterate through layers and observer whether
     //any of the higher layers are non-default and therefore
@@ -121,7 +114,8 @@ export default function (config) {
 
     const maxValue = isFunction(MAX) ? MAX({
       date,
-      isHigherResNonDefault
+      isHigherResNonDefault,
+      layers
     }) : MAX
 
     if (type == recurrence.Every) {
@@ -178,14 +172,14 @@ export default function (config) {
       })
     }
 
-    // Clears the closest lower resolution in the date date time
+    // Clears the closest lower resolution in the date time
     Object.keys(layers).forEach(e =>
       !initialRun &&
       isLowerResolutionAndNotDefault(layers[e].resolution) ?
       clear(date, layers[e].resolution) : true
     )
 
-    //console.log(`Leaving ${name} with ${date}`)
+    //console.log(`Leaving ${resolution} with ${date}`)
 
     return date
   }

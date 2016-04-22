@@ -2,18 +2,18 @@ import scheduler from '../../index'
 import {testCase} from './templates.test'
 
 testCase({
-  description : 'Every 12 days',
+  description : 'Every 14 days',
   start : new Date(2000, 1, 1, 0, 0, 0, 0),
   expectedDates : [
     new Date(2000, 1, 1, 0, 0, 0, 0),
-    new Date(2000, 1, 13, 0, 0, 0, 0),
-    new Date(2000, 1, 25, 0, 0, 0, 0),
-    new Date(2000, 2, 8, 0, 0, 0, 0),
-    new Date(2000, 2, 20, 0, 0, 0, 0),
-    new Date(2000, 3, 1, 0, 0, 0, 0),
-    new Date(2000, 3, 13, 0, 0, 0, 0)
+    new Date(2000, 1, 15, 0, 0, 0, 0),
+    new Date(2000, 1, 29, 0, 0, 0, 0),
+    new Date(2000, 2, 14, 0, 0, 0, 0),
+    new Date(2000, 2, 28, 0, 0, 0, 0),
+    new Date(2000, 3, 11, 0, 0, 0, 0),
+    new Date(2000, 3, 25, 0, 0, 0, 0)
   ],
-  trigger : scheduler().EveryDay(12)
+  trigger : scheduler().EveryDay(14)
 });
 
 testCase({
@@ -28,11 +28,11 @@ testCase({
     new Date(2000, 6, 12, 0, 0, 0, 0),
     new Date(2000, 7, 12, 0, 0, 0, 0)
   ],
-  trigger : scheduler().OnDayOfMonth(12)
+  trigger : scheduler().OnDayOfMonth(11)
 });
 
 testCase({
-  description : 'Every 4th day in a week',
+  description : 'Every 5th day in a week',
   start : new Date(2000, 1, 20, 0, 0, 0, 0),
   expectedDates : [
     new Date(2000, 1, 25, 0, 0, 0, 0),
@@ -81,11 +81,11 @@ testCase({
     new Date(2000, 3, 12, 8, 0, 0, 0),
     new Date(2000, 3, 12, 16, 0, 0, 0)
   ],
-  trigger : scheduler().OnDayOfMonth(12).EveryHour(8)
+  trigger : scheduler().OnDayOfMonth(11).EveryHour(8)
 });
 
 testCase({
-  description : 'Every 4th day in a week every 8 hours',
+  description : 'Every 5th day in a week every 8 hours',
   start : new Date(2000, 1, 20, 0, 0, 0, 0),
   expectedDates : [
     new Date(2000, 1, 25, 0, 0, 0, 0),
@@ -130,11 +130,11 @@ testCase({
     new Date(2000, 6, 12, 8, 0, 0, 0),
     new Date(2000, 7, 12, 8, 0, 0, 0)
   ],
-  trigger : scheduler().OnDayOfMonth(12).OnHour(8)
+  trigger : scheduler().OnDayOfMonth(11).OnHour(8)
 });
 
 testCase({
-  description : 'Every 4th day in a week at 8AM',
+  description : 'Every 5th day in a week at 8AM',
   start : new Date(2000, 1, 20, 0, 0, 0, 0),
   expectedDates : [
     new Date(2000, 1, 25, 8, 0, 0, 0),

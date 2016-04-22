@@ -28,7 +28,22 @@ testCase({
     new Date(2000, 11, 3, 0, 0, 0, 0),
     new Date(2001, 1, 3, 0, 0, 0, 0)
   ],
-  trigger : scheduler().EveryMonth(2).OnDayOfMonth(3)
+  trigger : scheduler().EveryMonth(2).OnDayOfMonth(2)
+});
+
+testCase({
+  description : 'Every 2 months every 10 days',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 0),
+    new Date(2000, 1, 11, 0, 0, 0, 0),
+    new Date(2000, 1, 21, 0, 0, 0, 0),
+    new Date(2000, 3, 1, 0, 0, 0, 0),
+    new Date(2000, 3, 11, 0, 0, 0, 0),
+    new Date(2000, 3, 21, 0, 0, 0, 0),
+    new Date(2000, 5, 1, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryMonth(2).EveryDay(10)
 });
 
 testCase({

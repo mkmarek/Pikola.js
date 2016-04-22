@@ -9,7 +9,6 @@ import {
 
 export default {
 
-  MIN: 0,
   MAX: ({
       date,
       isHigherResNonDefault
@@ -17,7 +16,6 @@ export default {
     getTotalWeeksInMonth(date) : getIsoWeekFromDate(new Date(date.getYear() + 1, 0, 0)),
 
   resolution: resolution.Week,
-  name: 'Week',
 
   datepart: ({
     date,
