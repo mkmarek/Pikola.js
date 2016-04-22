@@ -117,70 +117,70 @@ describe('#OnWeek', function() {
 
 describe('#EveryMillisecond', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EveryMillisecond(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EveryMillisecond(0)
 
-    foo.should.throw(Error, /Interval in EveryMillisecond can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EveryMillisecond can't be lower than 1/)
   });
 
 });
 
 describe('#EverySecond', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EverySecond(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EverySecond(0)
 
-    foo.should.throw(Error, /Interval in EverySecond can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EverySecond can't be lower than 1/)
   });
 
 });
 
 describe('#EveryMinute', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EveryMinute(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EveryMinute(0)
 
-    foo.should.throw(Error, /Interval in EveryMinute can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EveryMinute can't be lower than 1/)
   });
 
 });
 
 describe('#EveryHour', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EveryHour(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EveryHour(0)
 
-    foo.should.throw(Error, /Interval in EveryHour can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EveryHour can't be lower than 1/)
   });
 
 });
 
 describe('#EveryDay', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EveryDay(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EveryDay(0)
 
-    foo.should.throw(Error, /Interval in EveryDay can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EveryDay can't be lower than 1/)
   });
 
 });
 
 describe('#EveryWeek', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EveryWeek(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EveryWeek(0)
 
-    foo.should.throw(Error, /Interval in EveryWeek can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EveryWeek can't be lower than 1/)
   });
 
 });
 
 describe('#EveryMonth', function() {
 
-  it('Should throw an error if interval lower than zero is provided', function() {
-    const foo = () => scheduler().EveryMonth(-1)
+  it('Should throw an error if interval lower than 1 is provided', function() {
+    const foo = () => scheduler().EveryMonth(0)
 
-    foo.should.throw(Error, /Interval in EveryMonth can't be lower than 0/)
+    foo.should.throw(Error, /Interval in EveryMonth can't be lower than 1/)
   });
 
 });

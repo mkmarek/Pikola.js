@@ -23,6 +23,7 @@ function onError(err) {
 
 gulp.task('lint', function () {
     return gulp.src([
+      'examples/*.js',
       config.paths.source + config.paths.sourceFilePattern,
       '!node_modules/**',
       '!' + path.join(config.paths.source, config.paths.tests) + config.paths.testFilePattern])

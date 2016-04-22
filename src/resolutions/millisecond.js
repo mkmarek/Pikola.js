@@ -17,7 +17,7 @@ export default {
     const milliseconds = date.getMilliseconds()
 
     const result = new Date(date)
-    result.setMilliseconds(milliseconds + (interval || 1))
+    result.setMilliseconds(milliseconds + interval)
 
     return result
   },

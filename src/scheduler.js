@@ -2,6 +2,8 @@ import resolution from './resolution'
 import recurrence from './recurrence'
 import resolutions from './resolutions/index'
 
+const TIMER_RESOLUTION = 400
+
 /**
  * Gets default layer props
  */
@@ -76,6 +78,85 @@ export function getExecutionDatesAfter(date, opt, num) {
 }
 
 /**
+ * Registers fire callback
+ *
+ * @param  {Function} cb  Callback that should be fired after schedule is up
+ * @param  {Object}   opt schedule configuration
+ */
+export function onFire(cb, opt) {
+  opt = {
+    ...opt,
+    callbacks: {
+      ...opt.callbacks,
+      fire: cb
+    }
+  }
+
+  return opt
+}
+
+/**
+ * Plans next execution of provided trigger
+ * @param  {Object} options   Trigger options
+ * @param  {Date}   start     Start of the trigger
+ * @param  {Date}   date      Date of previous execution
+ */
+function planNextExecution(options, start, date = null) {
+  const nextRun = getExecutionDateAfter(date || start, options, date == null)
+  const delay = nextRun - new Date()
+
+  if (delay - options.executionDelay > 0) {
+    doTimer(delay - options.executionDelay, TIMER_RESOLUTION, () => {
+      options.executionDelay = (options.executionDelay + (new Date() - nextRun)) / 2
+      if (options.fire(nextRun) !== false)
+        planNextExecution(options, start, nextRun)
+    })
+  } else {
+    if (options.fire(nextRun) !== false)
+      setTimeout(() => planNextExecution(options, start, nextRun), 0)
+  }
+}
+
+/**
+ * Sets up timer to fire in defined interval
+ */
+function doTimer(length, resolution, oncomplete) {
+  const steps = (length / 100) * (resolution / 10),
+    speed = length / steps,
+    start = new Date().getTime()
+
+  let count = 0
+
+  function instance() {
+    if (count++ >= steps) {
+      oncomplete(steps, count)
+    } else {
+      const diff = (new Date().getTime() - start) - (count * speed)
+      setTimeout(instance, (speed - diff))
+    }
+  }
+
+  setTimeout(instance, speed)
+}
+
+/**
+ * Starts timer execution
+ * @param  {Date}   when      When this timer shall start
+ * @param  {Object} options   Trigger options
+ */
+export function start(when, options) {
+  const delay = when - new Date()
+
+  options.executionDelay = 0
+
+  if (delay > 0) {
+    doTimer(delay, TIMER_RESOLUTION, () => planNextExecution(options, when))
+  } else {
+    planNextExecution(options, when)
+  }
+}
+
+/**
  * Gets the next possible execution based on the defined schedule and passed date
  *
  * @param  {Date}         the date from which the first exection shall start
@@ -84,5 +165,8 @@ export function getExecutionDatesAfter(date, opt, num) {
  *                        is not possible
  */
 function getExecutionDateAfter(date, opt, initialRun) {
-  return resolutions(opt)({ date, initialRun })
+  return resolutions(opt)({
+    date,
+    initialRun
+  })
 }

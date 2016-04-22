@@ -70,7 +70,7 @@ export const EveryWeek = func(
   resolution.Week,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EveryWeek can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EveryWeek can\'t be lower than 1')
   },
   OnDayOfWeek(0))
 
@@ -81,7 +81,10 @@ export const OnDayOfMonth = func(
     if (interval < 0) throw Error('Interval in OnDayOfMonth can\'t be lower than 0')
     if (interval > 30) throw Error('Interval in OnDayOfMonth can\'t be higher than 30')
   },
-  EveryWeek(null))
+  func(resolution.Week,
+    recurrence.Every,
+    null,
+    OnDayOfWeek(0))(null))
 
 export const OnWeek = func(
   resolution.Week,
@@ -96,14 +99,14 @@ export const EveryMillisecond = func(
   resolution.Millisecond,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EveryMillisecond can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EveryMillisecond can\'t be lower than 1')
   })
 
 export const EverySecond = func(
   resolution.Second,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EverySecond can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EverySecond can\'t be lower than 1')
   },
   OnMillisecond(0))
 
@@ -111,7 +114,7 @@ export const EveryMinute = func(
   resolution.Minute,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EveryMinute can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EveryMinute can\'t be lower than 1')
   },
   OnSecond(0))
 
@@ -119,7 +122,7 @@ export const EveryHour = func(
   resolution.Hour,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EveryHour can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EveryHour can\'t be lower than 1')
   },
   OnMinute(0))
 
@@ -127,7 +130,7 @@ export const EveryDay = func(
   resolution.Day,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EveryDay can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EveryDay can\'t be lower than 1')
   },
   OnHour(0))
 
@@ -135,6 +138,6 @@ export const EveryMonth = func(
   resolution.Month,
   recurrence.Every,
   (interval) => {
-    if (interval < 0) throw Error('Interval in EveryMonth can\'t be lower than 0')
+    if (interval < 1) throw Error('Interval in EveryMonth can\'t be lower than 1')
   },
   OnDayOfMonth(0))

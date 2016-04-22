@@ -1,4 +1,4 @@
-import { getExecutionDatesAfter, create } from './scheduler'
+import { getExecutionDatesAfter, create, onFire, start } from './scheduler'
 import * as functions from './functions'
 
 /**
@@ -27,7 +27,13 @@ function wrap(opt) {
     ...wrapFunctions(opt),
 
     GetExecutionDatesAfter: (date, numberOfDates) =>
-      getExecutionDatesAfter(date, resolveOptions(opt, create()), numberOfDates)
+      getExecutionDatesAfter(date, resolveOptions(opt, create()), numberOfDates),
+
+    OnFire: (cb) =>
+      wrap(onFire(cb, opt)),
+
+    Start: (when = new Date()) =>
+      start(when, resolveOptions(opt, create()))
   }
 }
 
@@ -36,7 +42,7 @@ function resolveOptions(props, initialOpt) {
   const opt = Object.keys(props)
   .map(e => props[e])
   .sort((a,b) => b.resolution - a.resolution)
-  .reduce((c,e) => e.execute(c), initialOpt)
+  .reduce((c,e) => e.execute ? e.execute(c) : { ...c, ...e }, initialOpt)
 
   return opt
 }

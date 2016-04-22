@@ -17,7 +17,7 @@ export default {
     const seconds = date.getHours()
 
     const result = new Date(date)
-    result.setHours(seconds + (interval || 1))
+    result.setHours(seconds + interval)
 
     return result
   },

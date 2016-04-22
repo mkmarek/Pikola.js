@@ -44,7 +44,7 @@ export default {
     const days = date.getDate()
 
     const result = new Date(date)
-    result.setDate(days + (interval || 1))
+    result.setDate(days + interval)
 
     return result
   },

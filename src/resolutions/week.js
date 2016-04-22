@@ -27,7 +27,7 @@ export default {
     interval
   }) => {
     const weeks = getIsoWeekFromDate(date)
-    const result = getDateOfISOWeek(weeks + (interval || 1), date.getFullYear())
+    const result = getDateOfISOWeek(weeks + interval, date.getFullYear())
 
     return result
   },

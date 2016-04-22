@@ -15,7 +15,7 @@ export default {
     const seconds = date.getMonth()
 
     const result = new Date(date)
-    result.setMonth(seconds + (interval || 1))
+    result.setMonth(seconds + interval)
 
     return result
   }

@@ -17,7 +17,7 @@ export default {
     const seconds = date.getSeconds()
 
     const result = new Date(date)
-    result.setSeconds(seconds + (interval || 1))
+    result.setSeconds(seconds + interval)
 
     return result
   },
