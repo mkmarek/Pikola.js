@@ -2,7 +2,7 @@ Pikola.js - Advanced scheduling library
 ==========
 
 [![Build Status](https://travis-ci.org/mkmarek/Pikola.js.svg?branch=master)](https://travis-ci.org/mkmarek/Pikola.js) [![Coverage Status](https://coveralls.io/repos/github/mkmarek/Pikola.js/badge.svg?branch=master)](https://coveralls.io/github/mkmarek/Pikola.js?branch=master)
-[![npm version](https://badge.fury.io/js/Pikola.svg)](https://badge.fury.io/js/Pikola)
+[![npm version](https://badge.fury.io/js/pikola.svg)](https://badge.fury.io/js/pikola)
 
 This project is under heavy development. New functionality will be added continuously.
 **It is not recommended to use it in production scenario just yet.**
