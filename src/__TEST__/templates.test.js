@@ -2,13 +2,13 @@ import chai from 'chai'
 
 chai.should();
 
-function doubleFormat(no) {
+export function doubleFormat(no) {
   if (no <= 9)
     return '0' + no
   return no
 }
 
-function dateToStr(date) {
+export function dateToStr(date) {
   return doubleFormat(date.getDate()) +
     '.' +
     doubleFormat(date.getMonth() + 1) +
@@ -24,7 +24,7 @@ function dateToStr(date) {
     doubleFormat(date.getMilliseconds())
 }
 
-export default function triggerTestTemplate({
+export function testCase({
   description,
   start,
   expectedDates,
@@ -39,7 +39,7 @@ export default function triggerTestTemplate({
         dates = trigger.GetExecutionDatesAfter(start, expectedDates.length);
       });
 
-      it('Should return a set of 6 dates', function() {
+      it(`Should return a set of ${expectedDates.length} dates`, function() {
         dates.length.should.equal(expectedDates.length);
       });
 

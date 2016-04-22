@@ -36,12 +36,13 @@ export function create() {
  * @return {Object} Configuration object holding new scheduling info
  */
 export function addLayer(layer, opt) {
+
   const options = {
     ...opt,
     layers: {
       ...opt.layers,
-      [layer.recurrence]: {
-        ...opt.layers[layer.recurrence],
+      [layer.resolution]: {
+        ...opt.layers[layer.resolution],
         ...layer
       }
     }
@@ -83,6 +84,5 @@ export function getExecutionDatesAfter(date, opt, num) {
  *                        is not possible
  */
 function getExecutionDateAfter(date, opt, initialRun) {
-
   return resolutions(opt)({ date, initialRun })
 }

@@ -1,5 +1,5 @@
 import scheduler from '../../index'
-import testCase from './templates.test'
+import {testCase} from './templates.test'
 
 testCase({
   description : 'Every 20 seconds',

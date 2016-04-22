@@ -12,8 +12,8 @@ function wrapFunctions(opt) {
   return Object.keys(functions)
     .reduce((composed, f) => ({
       ...composed,
-      [f]: (...args) => wrap(functions[f](...args, opt))
-    }), {})
+      [f]: (...args) => wrap( { ...opt, [f] : functions[f](...args) } )
+    }), { })
 }
 
 /**
@@ -27,8 +27,18 @@ function wrap(opt) {
     ...wrapFunctions(opt),
 
     GetExecutionDatesAfter: (date, numberOfDates) =>
-      getExecutionDatesAfter(date, opt, numberOfDates)
+      getExecutionDatesAfter(date, resolveOptions(opt, create()), numberOfDates)
   }
+}
+
+function resolveOptions(props, initialOpt) {
+
+  const opt = Object.keys(props)
+  .map(e => props[e])
+  .sort((a,b) => b.resolution - a.resolution)
+  .reduce((c,e) => e.execute(c), initialOpt)
+
+  return opt
 }
 
 /**
@@ -38,7 +48,5 @@ function wrap(opt) {
  *                  Exposing number of functions
  */
 export default function () {
-  const opt = create()
-
-  return wrap(opt)
+  return wrap({})
 }

@@ -1,180 +1,88 @@
-import { addLayer } from './scheduler'
+import {
+  addLayer
+} from './scheduler'
 import resolution from './resolution'
 import recurrence from './recurrence'
 
-export function EveryMillisecond(interval, opt) {
-
-  const newOpt = addLayer({
-    recurrence: resolution.Millisecond,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
+function func(resolution, type, beforeRun) {
+  return (interval) => ({
+    resolution,
+    execute: (opt) => {
+      if (beforeRun) opt = beforeRun.execute(opt)
+      return addLayer({
+        resolution,
+        type,
+        interval
+      }, opt)
+    }
+  })
 }
 
-export function EverySecond(interval, opt) {
+export const OnMillisecond = func(
+  resolution.Millisecond,
+  recurrence.On
+)
 
-  opt = OnMillisecond(0, opt)
+export const OnSecond = func(
+  resolution.Second,
+  recurrence.On,
+  OnMillisecond(0))
 
-  const newOpt = addLayer({
-    recurrence: resolution.Second,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
+export const OnMinute = func(
+  resolution.Minute,
+  recurrence.On,
+  OnSecond(0))
 
-  return newOpt
-}
+export const OnHour = func(
+  resolution.Hour,
+  recurrence.On,
+  OnMinute(0))
 
-export function EveryMinute(interval, opt) {
+export const OnDayOfWeek = func(
+  resolution.Day,
+  recurrence.On,
+  OnHour(0))
 
-  opt = OnSecond(0, opt)
+export const EveryWeek = func(
+  resolution.Week,
+  recurrence.Every,
+  OnDayOfWeek(0))
 
-  const newOpt = addLayer({
-    recurrence: resolution.Minute,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
+export const OnDayOfMonth = func(
+  resolution.Day,
+  recurrence.On,
+  EveryWeek(null))
 
-  return newOpt
-}
+export const OnWeek = func(
+  resolution.Week,
+  recurrence.On,
+  OnDayOfWeek(0))
 
-export function EveryHour(interval, opt) {
+export const EveryMillisecond = func(
+  resolution.Millisecond,
+  recurrence.Every)
 
-  opt = OnMinute(0, opt)
+export const EverySecond = func(
+  resolution.Second,
+  recurrence.Every,
+  OnMillisecond(0))
 
-  const newOpt = addLayer({
-    recurrence: resolution.Hour,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
+export const EveryMinute = func(
+  resolution.Minute,
+  recurrence.Every,
+  OnSecond(0))
 
-  return newOpt
-}
+export const EveryHour = func(
+  resolution.Hour,
+  recurrence.Every,
+  OnMinute(0))
 
-export function EveryDay(interval, opt) {
+export const EveryDay = func(
+  resolution.Day,
+  recurrence.Every,
+  OnHour(0))
 
-  opt = OnHour(0, opt)
-
-  const newOpt = addLayer({
-    recurrence: resolution.Day,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function EveryWeek(interval, opt) {
-
-  opt = OnDayOfWeek(0, opt) //1 based
-
-  const newOpt = addLayer({
-    recurrence: resolution.Week,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function EveryMonth(interval, opt) {
-  opt = OnDayOfMonth(1, opt) //1 based
-
-  const newOpt = addLayer({
-    recurrence: resolution.Month,
-    type : recurrence.Every,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnMillisecond(interval, opt) {
-
-  const newOpt = addLayer({
-    recurrence: resolution.Millisecond,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnSecond(interval, opt) {
-
-  opt = OnMillisecond(0, opt)
-
-  const newOpt = addLayer({
-    recurrence: resolution.Second,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnMinute(interval, opt) {
-
-  opt = OnSecond(0, opt)
-
-  const newOpt = addLayer({
-    recurrence: resolution.Minute,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnHour(interval, opt) {
-
-  opt = OnMinute(0, opt)
-
-  const newOpt = addLayer({
-    recurrence: resolution.Hour,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnDayOfMonth(interval, opt) {
-
-  opt = EveryWeek(null, opt) //disable week layer
-
-  const newOpt = addLayer({
-    recurrence: resolution.Day,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnDayOfWeek(interval, opt) {
-
-  opt = OnHour(0, opt)
-
-  const newOpt = addLayer({
-    recurrence: resolution.Day,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
-
-export function OnWeek(interval, opt) {
-
-  opt = OnDayOfWeek(0, opt)
-
-  const newOpt = addLayer({
-    recurrence: resolution.Week,
-    type : recurrence.On,
-    interval: interval
-  }, opt)
-
-  return newOpt
-}
+export const EveryMonth = func(
+  resolution.Month,
+  recurrence.Every,
+  OnDayOfMonth(1))

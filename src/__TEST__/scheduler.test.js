@@ -33,7 +33,7 @@ describe('scheduler', function() {
 
     let initialOpt, opt;
     const layer = {
-      recurrence: layers.Millisecond,
+      resolution: layers.Millisecond,
       interval : 100
     };
 
