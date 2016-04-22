@@ -1,107 +1,103 @@
 import scheduler from '../../index'
+import testCase from './templates.test'
 
-import chai from 'chai'
+testCase({
+  description : 'Every 20 seconds',
+  start : new Date(2000, 1, 1, 0, 0, 1, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 1, 0),
+    new Date(2000, 1, 1, 0, 0, 21, 0),
+    new Date(2000, 1, 1, 0, 0, 41, 0),
+    new Date(2000, 1, 1, 0, 1, 1, 0),
+    new Date(2000, 1, 1, 0, 1, 21, 0),
+    new Date(2000, 1, 1, 0, 1, 41, 0),
+    new Date(2000, 1, 1, 0, 2, 1, 0)
+  ],
+  trigger : scheduler().EverySecond(20)
+});
 
-chai.should();
+testCase({
+  description : 'On 20th second of each minute',
+  start : new Date(2000, 1, 1, 0, 0, 30, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 1, 20, 0),
+    new Date(2000, 1, 1, 0, 2, 20, 0),
+    new Date(2000, 1, 1, 0, 3, 20, 0),
+    new Date(2000, 1, 1, 0, 4, 20, 0),
+    new Date(2000, 1, 1, 0, 5, 20, 0),
+    new Date(2000, 1, 1, 0, 6, 20, 0),
+    new Date(2000, 1, 1, 0, 7, 20, 0),
+  ],
+  trigger : scheduler().OnSecond(20)
+});
 
 
-describe('Every 20 seconds starting at ' +
-  new Date(2000, 1, 1, 0, 0, 0, 0),
-  function() {
+testCase({
+  description : 'Every 40 seconds on 600th millisecond',
+  start : new Date(2000, 1, 1, 0, 0, 1, 800),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 41, 600),
+    new Date(2000, 1, 1, 0, 1, 21, 600),
+    new Date(2000, 1, 1, 0, 2, 1, 600),
+    new Date(2000, 1, 1, 0, 2, 41, 600),
+    new Date(2000, 1, 1, 0, 3, 21, 600)
+  ],
+  trigger : scheduler()
+    .EverySecond(40)
+    .OnMillisecond(600)
+});
 
-    let trigger, dates, d;
+testCase({
+  description : 'Every 20 seconds every 250 millisecond',
+  start : new Date(2000, 1, 1, 0, 0, 1, 800),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 1, 800),
+    new Date(2000, 1, 1, 0, 0, 21, 0),
+    new Date(2000, 1, 1, 0, 0, 21, 250),
+    new Date(2000, 1, 1, 0, 0, 21, 500),
+    new Date(2000, 1, 1, 0, 0, 21, 750),
+    new Date(2000, 1, 1, 0, 0, 41, 0),
+    new Date(2000, 1, 1, 0, 0, 41, 250),
+    new Date(2000, 1, 1, 0, 0, 41, 500),
+    new Date(2000, 1, 1, 0, 0, 41, 750),
+    new Date(2000, 1, 1, 0, 1, 1, 0),
+    new Date(2000, 1, 1, 0, 1, 1, 250)
+  ],
+  trigger : scheduler()
+    .EverySecond(20)
+    .EveryMillisecond(250)
+});
 
-    before(function() {
-      trigger = scheduler()
-        .EverySecond(20);
+testCase({
+  description : 'On 20th second of each minute every 200ms',
+  start : new Date(2000, 1, 1, 0, 0, 30, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 1, 20, 0),
+    new Date(2000, 1, 1, 0, 1, 20, 200),
+    new Date(2000, 1, 1, 0, 1, 20, 400),
+    new Date(2000, 1, 1, 0, 1, 20, 600),
+    new Date(2000, 1, 1, 0, 1, 20, 800),
+    new Date(2000, 1, 1, 0, 2, 20, 0),
+    new Date(2000, 1, 1, 0, 2, 20, 200),
+  ],
+  trigger : scheduler()
+    .OnSecond(20)
+    .EveryMillisecond(200)
+});
 
-      d = new Date(2000, 1, 1, 0, 0, 0, 0);
-      Object.freeze(d);
-
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
-
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
-
-    it('First date should be equal to start', function() {
-      dates[0].getTime().should.equal(d.getTime());
-    });
-
-    it('Second date should have 0m and 20s', function() {
-      dates[1].getSeconds().should.equal(20);
-      dates[1].getMinutes().should.equal(0);
-    });
-
-    it('Third date should have 0m and 40s', function() {
-      dates[2].getSeconds().should.equal(40);
-      dates[2].getMinutes().should.equal(0);
-    });
-
-    it('Fourth date should have 1m and 0s', function() {
-      dates[3].getSeconds().should.equal(0);
-      dates[3].getMinutes().should.equal(1);
-    });
-
-    it('Fifth date should have 1m and 20s', function() {
-      dates[4].getSeconds().should.equal(20);
-      dates[4].getMinutes().should.equal(1);
-    });
-
-    it('Sixth date should have 1m and 40s', function() {
-      dates[5].getSeconds().should.equal(40);
-      dates[5].getMinutes().should.equal(1);
-    });
-  });
-
-describe('On every 20th second in each minute starting at ' +
-  new Date(2000, 1, 1, 0, 0, 30, 0),
-  function() {
-
-    let trigger, dates, d;
-
-    before(function() {
-      trigger = scheduler()
-        .OnSecond(20);
-
-      d = new Date(2000, 1, 1, 0, 0, 30, 0);
-      Object.freeze(d);
-
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
-
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
-
-    it('First date should have 1m and 20s', function() {
-      dates[0].getSeconds().should.equal(20);
-      dates[0].getMinutes().should.equal(1);
-    });
-
-    it('Second date should have 2m and 20s', function() {
-      dates[1].getSeconds().should.equal(20);
-      dates[1].getMinutes().should.equal(2);
-    });
-
-    it('Third date should have 3m and 20s', function() {
-      dates[2].getSeconds().should.equal(20);
-      dates[2].getMinutes().should.equal(3);
-    });
-
-    it('Fourth date should have 4m and 20s', function() {
-      dates[3].getSeconds().should.equal(20);
-      dates[3].getMinutes().should.equal(4);
-    });
-
-    it('Fifth date should have 5m and 20s', function() {
-      dates[4].getSeconds().should.equal(20);
-      dates[4].getMinutes().should.equal(5);
-    });
-
-    it('Sixth date should have 6m and 20s', function() {
-      dates[5].getSeconds().should.equal(20);
-      dates[5].getMinutes().should.equal(6);
-    });
-  });
+testCase({
+  description : 'On 20th second of each minute on 250th millisecond',
+  start : new Date(2000, 1, 1, 0, 0, 30, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 1, 20, 250),
+    new Date(2000, 1, 1, 0, 2, 20, 250),
+    new Date(2000, 1, 1, 0, 3, 20, 250),
+    new Date(2000, 1, 1, 0, 4, 20, 250),
+    new Date(2000, 1, 1, 0, 5, 20, 250),
+    new Date(2000, 1, 1, 0, 6, 20, 250),
+    new Date(2000, 1, 1, 0, 7, 20, 250),
+  ],
+  trigger : scheduler()
+    .OnSecond(20)
+    .OnMillisecond(250)
+});

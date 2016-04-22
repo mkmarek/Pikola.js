@@ -1,107 +1,90 @@
 import scheduler from '../../index'
+import testCase from './templates.test'
 
-import chai from 'chai'
+testCase({
+  description : 'Every 10 hours',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 0),
+    new Date(2000, 1, 1, 10, 0, 0, 0),
+    new Date(2000, 1, 1, 20, 0, 0, 0),
+    new Date(2000, 1, 2, 6, 0, 0, 0),
+    new Date(2000, 1, 2, 16, 0, 0, 0),
+    new Date(2000, 1, 3, 2, 0, 0, 0),
+    new Date(2000, 1, 3, 12, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryHour(10)
+});
 
-chai.should();
+testCase({
+  description : 'Every 10th hour',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 10, 0, 0, 0),
+    new Date(2000, 1, 2, 10, 0, 0, 0),
+    new Date(2000, 1, 3, 10, 0, 0, 0),
+    new Date(2000, 1, 4, 10, 0, 0, 0),
+    new Date(2000, 1, 5, 10, 0, 0, 0),
+    new Date(2000, 1, 6, 10, 0, 0, 0),
+    new Date(2000, 1, 7, 10, 0, 0, 0)
+  ],
+  trigger : scheduler().OnHour(10)
+});
 
+testCase({
+  description : 'Every 10 hours every 33 minutes',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 0),
+    new Date(2000, 1, 1, 0, 33, 0, 0),
 
-describe('Every 10 hours starting at ' +
-  new Date(2000, 1, 1, 0, 0, 0, 0),
-  function() {
+    new Date(2000, 1, 1, 10, 0, 0, 0),
+    new Date(2000, 1, 1, 10, 33, 0, 0),
 
-    let trigger, dates, d;
+    new Date(2000, 1, 1, 20, 0, 0, 0),
+    new Date(2000, 1, 1, 20, 33, 0, 0),
+  ],
+  trigger : scheduler().EveryHour(10).EveryMinute(33)
+});
 
-    before(function() {
-      trigger = scheduler()
-        .EveryHour(10);
+testCase({
+  description : 'Every 10th hour every 33 minutes',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 10, 0, 0, 0),
+    new Date(2000, 1, 1, 10, 33, 0, 0),
 
-      d = new Date(2000, 1, 1, 0, 0, 0, 0);
-      Object.freeze(d);
+    new Date(2000, 1, 2, 10, 0, 0, 0),
+    new Date(2000, 1, 2, 10, 33, 0, 0),
 
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
+    new Date(2000, 1, 3, 10, 0, 0, 0),
+    new Date(2000, 1, 3, 10, 33, 0, 0),
+  ],
+  trigger : scheduler().OnHour(10).EveryMinute(33)
+});
 
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
+testCase({
+  description : 'Every 10 hours every 33rd minute',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 33, 0, 0),
+    new Date(2000, 1, 1, 10, 33, 0, 0),
+    new Date(2000, 1, 1, 20, 33, 0, 0),
+    new Date(2000, 1, 2, 6, 33, 0, 0),
+    new Date(2000, 1, 2, 16, 33, 0, 0),
+  ],
+  trigger : scheduler().EveryHour(10).OnMinute(33)
+});
 
-    it('First date should b equal to the start', function() {
-      dates[0].getTime().should.equal(d.getTime())
-    });
-
-    it('Second date should have 1d and 10h', function() {
-      dates[1].getHours().should.equal(10);
-      dates[1].getDate().should.equal(1);
-    });
-
-    it('Third date should have 1d and 20h', function() {
-      dates[2].getHours().should.equal(20);
-      dates[2].getDate().should.equal(1);
-    });
-
-    it('Fourth date should have 2d and 6h', function() {
-      dates[3].getHours().should.equal(6);
-      dates[3].getDate().should.equal(2);
-    });
-
-    it('Fifth date should have 2d and 16hours', function() {
-      dates[4].getHours().should.equal(16);
-      dates[4].getDate().should.equal(2);
-    });
-
-    it('Sixth date should have 3d and 2h', function() {
-      dates[5].getHours().should.equal(2);
-      dates[5].getDate().should.equal(3);
-    });
-  });
-
-describe('Every 10th hour in each day starting at ' +
-  new Date(2000, 1, 1, 11, 0, 0, 0),
-  function() {
-
-    let trigger, dates, d;
-
-    before(function() {
-      trigger = scheduler()
-        .OnHour(10);
-
-      d = new Date(2000, 1, 1, 11, 0, 0, 0);
-      Object.freeze(d);
-
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
-
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
-
-    it('First date should have 2d and 10h', function() {
-      dates[0].getHours().should.equal(10);
-      dates[0].getDate().should.equal(2);
-    });
-
-    it('Second date should have 3d and 10h', function() {
-      dates[1].getHours().should.equal(10);
-      dates[1].getDate().should.equal(3);
-    });
-
-    it('Third date should have 4d and 10h', function() {
-      dates[2].getHours().should.equal(10);
-      dates[2].getDate().should.equal(4);
-    });
-
-    it('Fourth date should have 5d and 10h', function() {
-      dates[3].getHours().should.equal(10);
-      dates[3].getDate().should.equal(5);
-    });
-
-    it('Fifth date should have 6d and 10h', function() {
-      dates[4].getHours().should.equal(10);
-      dates[4].getDate().should.equal(6);
-    });
-
-    it('Sixth date should have 7d and 10h', function() {
-      dates[5].getHours().should.equal(10);
-      dates[5].getDate().should.equal(7);
-    });
-  });
+testCase({
+  description : 'Every 10th hour every 33rd minute',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 10, 33, 0, 0),
+    new Date(2000, 1, 2, 10, 33, 0, 0),
+    new Date(2000, 1, 3, 10, 33, 0, 0),
+    new Date(2000, 1, 4, 10, 33, 0, 0),
+    new Date(2000, 1, 5, 10, 33, 0, 0),
+  ],
+  trigger : scheduler().OnHour(10).OnMinute(33)
+});

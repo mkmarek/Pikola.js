@@ -63,3 +63,11 @@ export function getTotalWeeksInMonth(date) {
 
   return weeksInMonth
 }
+export function weeksInMonth(date) {
+  const totalWeeks = getTotalWeeksInMonth(date)
+
+  for (let i = 0; i < totalWeeks; i++) {
+    if (getFirstDayOfWeekInMonth(date, i) > date)
+      return i-1
+  }
+}

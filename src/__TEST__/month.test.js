@@ -1,57 +1,47 @@
 import scheduler from '../../index'
+import testCase from './templates.test'
 
-import chai from 'chai'
+testCase({
+  description : 'Every 5 months',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 0),
+    new Date(2000, 6, 1, 0, 0, 0, 0),
+    new Date(2000, 11, 1, 0, 0, 0, 0),
+    new Date(2001, 4, 1, 0, 0, 0, 0),
+    new Date(2001, 9, 1, 0, 0, 0, 0),
+    new Date(2002, 2, 1, 0, 0, 0, 0),
+    new Date(2002, 7, 1, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryMonth(5)
+});
 
-chai.should();
+testCase({
+  description : 'Every 2 months on third day',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 3, 0, 0, 0, 0),
+    new Date(2000, 3, 3, 0, 0, 0, 0),
+    new Date(2000, 5, 3, 0, 0, 0, 0),
+    new Date(2000, 7, 3, 0, 0, 0, 0),
+    new Date(2000, 9, 3, 0, 0, 0, 0),
+    new Date(2000, 11, 3, 0, 0, 0, 0),
+    new Date(2001, 1, 3, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryMonth(2).OnDayOfMonth(3)
+});
 
-
-describe('Every 5 months starting at ' +
-  new Date(2000, 1, 1, 0, 0, 0, 0),
-  function() {
-
-    let trigger, dates, d;
-
-    before(function() {
-      trigger = scheduler()
-        .EveryMonth(5);
-
-      d = new Date(2000, 1, 1, 0, 0, 0, 0);
-      Object.freeze(d);
-
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-      console.log(dates);
-    });
-
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
-
-    it('First date should b equal to the start', function() {
-      dates[0].getTime().should.equal(d.getTime())
-    });
-
-    it('Second date should have year 2000 and month 6', function() {
-      dates[1].getFullYear().should.equal(2000);
-      dates[1].getMonth().should.equal(6);
-    });
-
-    it('Third date should have year 2000 and month 11', function() {
-      dates[2].getFullYear().should.equal(2000);
-      dates[2].getMonth().should.equal(11);
-    });
-
-    it('Fourth date should have year 2001 and month 4', function() {
-      dates[3].getFullYear().should.equal(2001);
-      dates[3].getMonth().should.equal(4);
-    });
-
-    it('Fifth date should have year 2001 and month 9', function() {
-      dates[4].getFullYear().should.equal(2001);
-      dates[4].getMonth().should.equal(9);
-    });
-
-    it('Sixth date should have year 2002 and month 2', function() {
-      dates[5].getFullYear().should.equal(2002);
-      dates[5].getMonth().should.equal(2);
-    });
-  });
+testCase({
+  description : 'Every 4 months on second week',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 7, 0, 0, 0, 0),
+    new Date(2000, 5, 5, 0, 0, 0, 0),
+    new Date(2000, 9, 9, 0, 0, 0, 0),
+    new Date(2001, 1, 5, 0, 0, 0, 0),
+    new Date(2001, 5, 4, 0, 0, 0, 0),
+    new Date(2001, 9, 8, 0, 0, 0, 0),
+    new Date(2002, 1, 4, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryMonth(4).OnWeek(1)
+});

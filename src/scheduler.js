@@ -82,7 +82,7 @@ export function getExecutionDatesAfter(date, opt, num) {
  * @return {Date}         Date of the next execution or null when next execution
  *                        is not possible
  */
-function getExecutionDateAfter(date, opt, initialRun = false) {
+function getExecutionDateAfter(date, opt, initialRun) {
 
   return resolutions(opt)({ date, initialRun })
 }

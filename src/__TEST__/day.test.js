@@ -1,159 +1,149 @@
 import scheduler from '../../index'
+import testCase from './templates.test'
 
-import chai from 'chai'
+testCase({
+  description : 'Every 12 days',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 0),
+    new Date(2000, 1, 13, 0, 0, 0, 0),
+    new Date(2000, 1, 25, 0, 0, 0, 0),
+    new Date(2000, 2, 8, 0, 0, 0, 0),
+    new Date(2000, 2, 20, 0, 0, 0, 0),
+    new Date(2000, 3, 1, 0, 0, 0, 0),
+    new Date(2000, 3, 13, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryDay(12)
+});
 
-chai.should();
+testCase({
+  description : 'Every 12th day in a month',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 12, 0, 0, 0, 0),
+    new Date(2000, 2, 12, 0, 0, 0, 0),
+    new Date(2000, 3, 12, 0, 0, 0, 0),
+    new Date(2000, 4, 12, 0, 0, 0, 0),
+    new Date(2000, 5, 12, 0, 0, 0, 0),
+    new Date(2000, 6, 12, 0, 0, 0, 0),
+    new Date(2000, 7, 12, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfMonth(12)
+});
 
+testCase({
+  description : 'Every 4th day in a week',
+  start : new Date(2000, 1, 20, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 25, 0, 0, 0, 0),
+    new Date(2000, 2, 3, 0, 0, 0, 0),
+    new Date(2000, 2, 10, 0, 0, 0, 0),
+    new Date(2000, 2, 17, 0, 0, 0, 0),
+    new Date(2000, 2, 24, 0, 0, 0, 0),
+    new Date(2000, 2, 31, 0, 0, 0, 0),
+    new Date(2000, 3, 7, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfWeek(4)
+});
 
-describe('Every 12 days starting at ' +
-  new Date(2000, 1, 1, 0, 0, 0, 0),
-  function() {
+testCase({
+  description : 'Every 12 days every 8 hours',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 0, 0, 0),
+    new Date(2000, 1, 1, 8, 0, 0, 0),
+    new Date(2000, 1, 1, 16, 0, 0, 0),
 
-    let trigger, dates, d;
+    new Date(2000, 1, 13, 0, 0, 0, 0),
+    new Date(2000, 1, 13, 8, 0, 0, 0),
+    new Date(2000, 1, 13, 16, 0, 0, 0),
 
-    before(function() {
-      trigger = scheduler()
-        .EveryDay(12);
+    new Date(2000, 1, 25, 0, 0, 0, 0),
+    new Date(2000, 1, 25, 8, 0, 0, 0),
+    new Date(2000, 1, 25, 16, 0, 0, 0),
+  ],
+  trigger : scheduler().EveryDay(12).EveryHour(8)
+});
 
-      d = new Date(2000, 1, 1, 0, 0, 0, 0);
-      Object.freeze(d);
+testCase({
+  description : 'Every 12th day in a month every 8 hours',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 12, 0, 0, 0, 0),
+    new Date(2000, 1, 12, 8, 0, 0, 0),
+    new Date(2000, 1, 12, 16, 0, 0, 0),
 
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
+    new Date(2000, 2, 12, 0, 0, 0, 0),
+    new Date(2000, 2, 12, 8, 0, 0, 0),
+    new Date(2000, 2, 12, 16, 0, 0, 0),
 
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
+    new Date(2000, 3, 12, 0, 0, 0, 0),
+    new Date(2000, 3, 12, 8, 0, 0, 0),
+    new Date(2000, 3, 12, 16, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfMonth(12).EveryHour(8)
+});
 
-    it('First date should b equal to the start', function() {
-      dates[0].getTime().should.equal(d.getTime())
-    });
+testCase({
+  description : 'Every 4th day in a week every 8 hours',
+  start : new Date(2000, 1, 20, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 25, 0, 0, 0, 0),
+    new Date(2000, 1, 25, 8, 0, 0, 0),
+    new Date(2000, 1, 25, 16, 0, 0, 0),
 
-    it('Second date should be on 13th of Feb', function() {
-      dates[1].getDate().should.equal(13);
-      dates[1].getMonth().should.equal(1);
-    });
+    new Date(2000, 2, 3, 0, 0, 0, 0),
+    new Date(2000, 2, 3, 8, 0, 0, 0),
+    new Date(2000, 2, 3, 16, 0, 0, 0),
 
-    it('Third date should be on 25th of Feb', function() {
-      dates[2].getDate().should.equal(25);
-      dates[2].getMonth().should.equal(1);
-    });
+    new Date(2000, 2, 10, 0, 0, 0, 0),
+    new Date(2000, 2, 10, 8, 0, 0, 0),
+    new Date(2000, 2, 10, 16, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfWeek(4).EveryHour(8)
+});
 
-    it('Fourth date should be on 8th of Mar', function() {
-      dates[3].getDate().should.equal(8);
-      dates[3].getMonth().should.equal(2);
-    });
+testCase({
+  description : 'Every 12 days at 8AM',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 8, 0, 0, 0),
+    new Date(2000, 1, 13, 8, 0, 0, 0),
+    new Date(2000, 1, 25, 8, 0, 0, 0),
+    new Date(2000, 2, 8, 8, 0, 0, 0),
+    new Date(2000, 2, 20, 8, 0, 0, 0),
+    new Date(2000, 3, 1, 8, 0, 0, 0),
+    new Date(2000, 3, 13, 8, 0, 0, 0)
+  ],
+  trigger : scheduler().EveryDay(12).OnHour(8)
+});
 
-    it('Fifth date should be on 20th of Mar', function() {
-      dates[4].getDate().should.equal(20);
-      dates[4].getMonth().should.equal(2);
-    });
+testCase({
+  description : 'Every 12th day in a month at 8AM',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 12, 8, 0, 0, 0),
+    new Date(2000, 2, 12, 8, 0, 0, 0),
+    new Date(2000, 3, 12, 8, 0, 0, 0),
+    new Date(2000, 4, 12, 8, 0, 0, 0),
+    new Date(2000, 5, 12, 8, 0, 0, 0),
+    new Date(2000, 6, 12, 8, 0, 0, 0),
+    new Date(2000, 7, 12, 8, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfMonth(12).OnHour(8)
+});
 
-    it('Sixth date should be on 1st of Apr', function() {
-      dates[5].getDate().should.equal(1);
-      dates[5].getMonth().should.equal(3);
-    });
-  });
-
-describe('Every 12th day in each month starting at ' +
-  new Date(2000, 1, 20, 0, 0, 0, 0),
-  function() {
-
-    let trigger, dates, d;
-
-    before(function() {
-      trigger = scheduler()
-        .OnDayOfMonth(12);
-
-      d = new Date(2000, 1, 20, 0, 0, 0, 0);
-      Object.freeze(d);
-
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
-
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
-
-    it('First date should be on 12th of Mar', function() {
-      dates[0].getDate().should.equal(12);
-      dates[0].getMonth().should.equal(2);
-    });
-
-    it('Second date should be on 12th of Apr', function() {
-      dates[1].getDate().should.equal(12);
-      dates[1].getMonth().should.equal(3);
-    });
-
-    it('Third date should be on 12th of May', function() {
-      dates[2].getDate().should.equal(12);
-      dates[2].getMonth().should.equal(4);
-    });
-
-    it('Fourth date should be on 12th of Jun', function() {
-      dates[3].getDate().should.equal(12);
-      dates[3].getMonth().should.equal(5);
-    });
-
-    it('Fifth date should be on 12th of Jul', function() {
-      dates[4].getDate().should.equal(12);
-      dates[4].getMonth().should.equal(6);
-    });
-
-    it('Sixth date should be on 12th of Aug', function() {
-      dates[5].getDate().should.equal(12);
-      dates[5].getMonth().should.equal(7);
-    });
-  });
-
-
-describe('Every 4th day in each week starting at ' +
-  new Date(2000, 1, 20, 0, 0, 0, 0),
-  function() {
-
-    let trigger, dates, d;
-
-    before(function() {
-      trigger = scheduler()
-        .OnDayOfWeek(4);
-
-      d = new Date(2000, 1, 20, 0, 0, 0, 0);
-      Object.freeze(d);
-
-      dates = trigger.GetExecutionDatesAfter(d, 6);
-    });
-
-    it('Should return a set of 6 dates', function() {
-      dates.length.should.equal(6);
-    });
-
-    it('First date should be on 25th of Feb', function() {
-      dates[0].getDate().should.equal(25);
-      dates[0].getMonth().should.equal(1);
-    });
-
-    it('Second date should be on 3rd of Mar', function() {
-      dates[1].getDate().should.equal(3);
-      dates[1].getMonth().should.equal(2);
-    });
-
-    it('Third date should be on 10th of Mar', function() {
-      dates[2].getDate().should.equal(10);
-      dates[2].getMonth().should.equal(2);
-    });
-
-    it('Fourth date should be on 17th of Mar', function() {
-      dates[3].getDate().should.equal(17);
-      dates[3].getMonth().should.equal(2);
-    });
-
-    it('Fifth date should be on 24th of Mar', function() {
-      dates[4].getDate().should.equal(24);
-      dates[4].getMonth().should.equal(2);
-    });
-
-    it('Sixth date should be on 31st of Mar', function() {
-      dates[5].getDate().should.equal(31);
-      dates[5].getMonth().should.equal(2);
-    });
-  });
+testCase({
+  description : 'Every 4th day in a week at 8AM',
+  start : new Date(2000, 1, 20, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 25, 8, 0, 0, 0),
+    new Date(2000, 2, 3, 8, 0, 0, 0),
+    new Date(2000, 2, 10, 8, 0, 0, 0),
+    new Date(2000, 2, 17, 8, 0, 0, 0),
+    new Date(2000, 2, 24, 8, 0, 0, 0),
+    new Date(2000, 2, 31, 8, 0, 0, 0),
+    new Date(2000, 3, 7, 8, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfWeek(4).OnHour(8)
+});
