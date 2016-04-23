@@ -1,6 +1,6 @@
 {
   "name": "pikola",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Library for advanced scheduling",
   "main": "index.js",
   "repository": "https://github.com/mkmarek/Pikola.js.git",

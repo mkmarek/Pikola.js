@@ -15,7 +15,7 @@ var ENV = !!(+process.env.NODE_ENV || 0);
 module.exports = [{
   name: 'prod',
   entry: {
-    "pikola": js_root + 'index.js',
+    "pikola": './index.js',
   },
 
   output: {

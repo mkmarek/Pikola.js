@@ -2,7 +2,7 @@ import resolution from './resolution'
 import recurrence from './recurrence'
 import resolutions from './resolutions/index'
 
-const TIMER_RESOLUTION = 400
+const TIMER_RESOLUTION = 100
 
 /**
  * Gets default layer props

@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <script type="text/javascript" src = "../dist/pikola.min.js"></script>
+  </head>
+  <body>
+    <ul id="output"></ul>
+    <script type="text/javascript">
+
+      var container = document.getElementById('output')
+
+      var trigger = pikola()
+        .EverySecond(2)
+        .OnFire(function(date) {
+          var e = document.createElement('li');
+          e.innerHTML = new Date().toString()
+
+          container.appendChild(e)
+        })
+        .Start()
+
+
+    </script>
+  </body>
+</html>
