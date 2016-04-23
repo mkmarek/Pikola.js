@@ -1,5 +1,5 @@
-import * as scheduler from '../scheduler'
-import layers from '../resolution'
+import * as scheduler from '../src/scheduler'
+import layers from '../src/resolution'
 
 import chai from 'chai'
 

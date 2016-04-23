@@ -1,4 +1,4 @@
-import scheduler from '../../index'
+import scheduler from '../src/index'
 import {testCase} from './templates.test'
 
 testCase({

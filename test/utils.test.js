@@ -2,7 +2,7 @@ import {
   getFirstDayOfWeekInMonth,
   getIsoWeekFromDate,
   getDateOfISOWeek
-} from '../utils'
+} from '../src/utils'
 
 import chai from 'chai'
 

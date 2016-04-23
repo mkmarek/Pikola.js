@@ -1,4 +1,4 @@
-import scheduler from '../../index'
+import scheduler from '../src/index'
 import chai from 'chai'
 
 const should = chai.should();

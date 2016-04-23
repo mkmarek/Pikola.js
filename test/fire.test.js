@@ -1,4 +1,4 @@
-import scheduler from '../../index'
+import scheduler from '../src/index'
 import chai from 'chai'
 import {dateToStr} from './templates.test'
 

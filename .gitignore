@@ -39,3 +39,6 @@ coverage
 
 #inteliJ idea files
 .idea
+
+.nyc_output
+dist

@@ -1,15 +1,17 @@
 {
   "name": "pikola",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Library for advanced scheduling",
   "main": "index.js",
   "repository": "https://github.com/mkmarek/Pikola.js.git",
   "scripts": {
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "test": "node ./node_modules/gulp/bin/gulp cover",
-    "start": "gulp watch",
-    "build": "gulp build-scripts",
-    "postinstall": "gulp build-scripts"
+    "clean": "rm -rf .nyc_output && rm -rf coverage && rm -rf lib && rm -rf dist",
+    "coveralls": "npm run coverage && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
+    "test": "npm run lint && mocha --compilers js:babel-core/register ./test/**/*.js",
+    "coverage": "nyc --reporter=html --reporter=lcov --require babel-core/register mocha ./test/**/*.js",
+    "build": "BABEL_ENV=production ./node_modules/.bin/babel ./src --out-dir ./lib",
+    "lint": "eslint src",
+    "prod": "npm run lint && npm run build && BABEL_ENV=production NODE_ENV=0 webpack --config webpack.prod.config.js && BABEL_ENV=production NODE_ENV=1 webpack --config webpack.prod.config.js"
   },
   "keywords": [
     "date",
@@ -23,27 +25,22 @@
     "url": "https://github.com/mkmarek/"
   },
   "license": "MIT",
-  "dependencies": {
-    "babel-cli": "^6.3.17",
+  "devDependencies": {
+    "babel-cli": "^6.6.4",
+    "babel-core": "^6.5.2",
     "babel-eslint": "^6.0.3",
-    "babel-preset-es2015": "^6.6.0",
+    "babel-loader": "^6.2.3",
+    "babel-plugin-transform-runtime": "^6.5.2",
+    "babel-polyfill": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "chai": "^3.4.1",
     "coveralls": "^2.11.9",
-    "del": "^2.2.0",
+    "eslint": "^2.8.0",
     "eslint-config-rackt": "^1.1.1",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.1",
-    "gulp-babel-istanbul": "^1.0.0",
-    "gulp-eslint": "^2.0.0",
-    "gulp-inject-modules": "^0.1.1",
-    "gulp-istanbul-report": "0.0.1",
-    "gulp-mocha": "^2.2.0",
-    "gulp-sourcemaps": "^2.0.0-alpha",
-    "isparta": "^4.0.0",
-    "istanbul": "^0.4.3",
-    "merge2": "^1.0.2",
-    "mocha": "^2.3.4",
-    "remap-istanbul": "^0.6.3"
-  }
+    "mocha": "^2.4.5",
+    "nyc": "^6.4.0",
+    "webpack": "^1.12.2"
+  },
+  "dependencies": {}
 }
