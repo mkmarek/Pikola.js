@@ -39,7 +39,7 @@
     "gulp-inject-modules": "^0.1.1",
     "gulp-istanbul-report": "0.0.1",
     "gulp-mocha": "^2.2.0",
-    "gulp-sourcemaps": "^2.0.0",
+    "gulp-sourcemaps": "^2.0.0-alpha",
     "isparta": "^4.0.0",
     "istanbul": "^0.4.3",
     "merge2": "^1.0.2",
