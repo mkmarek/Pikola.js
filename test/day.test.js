@@ -147,3 +147,41 @@ testCase({
   ],
   trigger : scheduler().OnDayOfWeek(4).OnHour(8)
 });
+
+testCase({
+  description : 'Every 2nd and 4th and 5th day in a week',
+  start : new Date(2000, 1, 20, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 22, 0, 0, 0, 0),
+    new Date(2000, 1, 24, 0, 0, 0, 0),
+    new Date(2000, 1, 25, 0, 0, 0, 0),
+
+    new Date(2000, 1, 29, 0, 0, 0, 0),
+    new Date(2000, 2, 2, 0, 0, 0, 0),
+    new Date(2000, 2, 3, 0, 0, 0, 0),
+
+    new Date(2000, 2, 7, 0, 0, 0, 0),
+    new Date(2000, 2, 9, 0, 0, 0, 0),
+    new Date(2000, 2, 10, 0, 0, 0, 0),
+  ],
+  trigger : scheduler().OnDayOfWeek(1,3,4)
+});
+
+testCase({
+  description : 'Every 12th and 15th and 20th day in a month',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 12, 0, 0, 0, 0),
+    new Date(2000, 1, 15, 0, 0, 0, 0),
+    new Date(2000, 1, 20, 0, 0, 0, 0),
+
+    new Date(2000, 2, 12, 0, 0, 0, 0),
+    new Date(2000, 2, 15, 0, 0, 0, 0),
+    new Date(2000, 2, 20, 0, 0, 0, 0),
+
+    new Date(2000, 3, 12, 0, 0, 0, 0),
+    new Date(2000, 3, 15, 0, 0, 0, 0),
+    new Date(2000, 3, 20, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().OnDayOfMonth(11,14,19)
+});

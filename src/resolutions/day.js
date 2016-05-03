@@ -67,7 +67,11 @@ export default {
       const days = weekStart.getDate()
       weekStart.setDate(days + interval)
 
-      result.setTime(weekStart.getTime())
+      //prevent going to previous Month
+      if (result.getMonth() > weekStart.getMonth())
+        result.setDate(1)
+      else
+        result.setTime(weekStart.getTime())
     }
 
     return result

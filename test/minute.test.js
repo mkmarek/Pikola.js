@@ -88,3 +88,22 @@ testCase({
   ],
   trigger : scheduler().OnMinute(20).OnSecond(33)
 });
+
+testCase({
+  description : 'On 20th and 40th and 45th minute each hour',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 20, 0, 0),
+    new Date(2000, 1, 1, 0, 40, 0, 0),
+    new Date(2000, 1, 1, 0, 45, 0, 0),
+
+    new Date(2000, 1, 1, 1, 20, 0, 0),
+    new Date(2000, 1, 1, 1, 40, 0, 0),
+    new Date(2000, 1, 1, 1, 45, 0, 0),
+
+    new Date(2000, 1, 1, 2, 20, 0, 0),
+    new Date(2000, 1, 1, 2, 40, 0, 0),
+    new Date(2000, 1, 1, 2, 45, 0, 0),
+  ],
+  trigger : scheduler().OnMinute(20, 40, 45)
+});

@@ -64,6 +64,14 @@ const trigger = pikola()
     .OnDayOfWeek(0)
 ```
 
+You can also specify multiple parameters for multiple occurrences like:
+
+```javascript
+const trigger = pikola()
+    // runs on Monday, Wednesday, Friday, Saturday - every week
+    .OnDayOfWeek(0,2,4,5)
+```
+
 You can combine these function to customize the result trigger.
 
 ```javascript
@@ -130,7 +138,7 @@ Roadmap
 There is so much more stuff I want to add to this library but here is a simple
 list of some of the ones that will come first:
 
-- [ ] Possibility to define multiple On recurrences something like OnHour(1,4,8,22)
+- [x] Possibility to define multiple On recurrences something like OnHour(1,4,8,22)
 - [ ] Internationalization - Some values are now fixed. like for example that Monday is
 the first day of the week. That needs to be changed
 - [ ] Better validation mechanism. Some combinations of functions forming trigger

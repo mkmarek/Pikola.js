@@ -19,8 +19,9 @@ export default {
 
   datepart: ({
     date,
-    isHigherResNonDefault
-  }) => isHigherResNonDefault ? weeksInMonth(date) : getIsoWeekFromDate(date),
+    isHigherResNonDefault,
+    interval
+  }) => isHigherResNonDefault || interval.length > 1 ? weeksInMonth(date)  : getIsoWeekFromDate(date),
 
   every: ({
     date,

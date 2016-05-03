@@ -5,8 +5,11 @@ import resolution from './resolution'
 import recurrence from './recurrence'
 
 function func(resolution, type, validate, beforeRun) {
-  return (interval) => {
-    if (validate) validate(interval)
+  return (...intervalValue) => {
+
+    const interval = Array.isArray(intervalValue) ? intervalValue : [ intervalValue ]
+    if (validate) interval.forEach(e => validate(e))
+
     return {
       resolution,
       execute: (opt) => {
@@ -14,7 +17,7 @@ function func(resolution, type, validate, beforeRun) {
         return addLayer({
           resolution,
           type,
-          interval
+          interval : interval.sort()
         }, opt)
       }
     }

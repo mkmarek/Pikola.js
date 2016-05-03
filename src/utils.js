@@ -1,3 +1,5 @@
+import resolution from './resolution'
+
 /**
  * Gets a first day in the month specified in provided date and in the
  * week number
@@ -63,11 +65,51 @@ export function getTotalWeeksInMonth(date) {
 
   return weeksInMonth
 }
+
 export function weeksInMonth(date) {
   const totalWeeks = getTotalWeeksInMonth(date)
 
   for (let i = 0; i < totalWeeks; i++) {
     if (getFirstDayOfWeekInMonth(date, i) > date)
       return i-1
+  }
+}
+
+export function isFunction(functionToCheck) {
+  const getType = {}
+  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]'
+}
+
+export function getFirstFreeInterval(intervals, minimum) {
+  for (let i = 0; i < intervals.length; i++) {
+    if ( intervals[i] > minimum) {
+      return intervals[i]
+    }
+  }
+}
+
+export function clearResolution(date, res) {
+  switch (res) {
+    case resolution.Week:
+      date.setDate(1)
+      return
+    case resolution.Day:
+      {
+        const weeks = getIsoWeekFromDate(date)
+        date = getDateOfISOWeek(weeks, date.getFullYear())
+        return
+      }
+    case resolution.Hour:
+      date.setHours(0)
+      return
+    case resolution.Minute:
+      date.setMinutes(0)
+      return
+    case resolution.Second:
+      date.setSeconds(0)
+      return
+    case resolution.Millisecond:
+      date.setMilliseconds(0)
+      return
   }
 }

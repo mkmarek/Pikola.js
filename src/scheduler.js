@@ -9,7 +9,7 @@ const TIMER_RESOLUTION = 100
  */
 function getDefaultLayerProps(resolution) {
   return {
-    interval: 1,
+    interval: [ 1 ],
     type: recurrence.Every,
     resolution
   }
