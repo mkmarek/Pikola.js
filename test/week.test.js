@@ -89,3 +89,22 @@ testCase({
   ],
   trigger : scheduler().OnWeek(2).OnDayOfWeek(1)
 });
+
+testCase({
+  description : 'Every 2nd and 3rd 4th week in a month',
+  start : new Date(2000, 1, 1, 0, 0, 0, 0),
+  expectedDates : [
+    new Date(2000, 1, 7, 0, 0, 0, 0),
+    new Date(2000, 1, 14, 0, 0, 0, 0),
+    new Date(2000, 1, 21, 0, 0, 0, 0),
+
+    new Date(2000, 2, 6, 0, 0, 0, 0),
+    new Date(2000, 2, 13, 0, 0, 0, 0),
+    new Date(2000, 2, 20, 0, 0, 0, 0),
+
+    new Date(2000, 3, 3, 0, 0, 0, 0),
+    new Date(2000, 3, 10, 0, 0, 0, 0),
+    new Date(2000, 3, 17, 0, 0, 0, 0)
+  ],
+  trigger : scheduler().OnWeek(1,2,3)
+});

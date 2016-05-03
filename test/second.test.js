@@ -101,3 +101,18 @@ testCase({
     .OnSecond(20)
     .OnMillisecond(250)
 });
+
+testCase({
+  description : 'On 20th and 30th and 50th second of each minute',
+  start : new Date(2000, 1, 1, 0, 0, 55, 0),
+  expectedDates : [
+    new Date(2000, 1, 1, 0, 1, 20, 0),
+    new Date(2000, 1, 1, 0, 1, 30, 0),
+    new Date(2000, 1, 1, 0, 1, 50, 0),
+    new Date(2000, 1, 1, 0, 2, 20, 0),
+    new Date(2000, 1, 1, 0, 2, 30, 0),
+    new Date(2000, 1, 1, 0, 2, 50, 0),
+  ],
+  trigger : scheduler()
+    .OnSecond(20, 30, 50)
+});
