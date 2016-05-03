@@ -1,42 +1,10 @@
-/* eslint no-console: 0 */
-
 import recurrence from '../recurrence'
-import resolution from '../resolution'
+
 import {
-  getIsoWeekFromDate,
-  getDateOfISOWeek
+  clearResolution,
+  isFunction,
+  getFirstFreeInterval
 } from '../utils'
-
-function isFunction(functionToCheck) {
-  const getType = {}
-  return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]'
-}
-
-function clear(date, res) {
-  switch (res) {
-    case resolution.Week:
-      date.setDate(1)
-      return
-    case resolution.Day:
-      {
-        const weeks = getIsoWeekFromDate(date)
-        date = getDateOfISOWeek(weeks, date.getFullYear())
-        return
-      }
-    case resolution.Hour:
-      date.setHours(0)
-      return
-    case resolution.Minute:
-      date.setMinutes(0)
-      return
-    case resolution.Second:
-      date.setSeconds(0)
-      return
-    case resolution.Millisecond:
-      date.setMilliseconds(0)
-      return
-  }
-}
 
 /**
  * Implements the common flow for all resolutions
@@ -152,29 +120,17 @@ export default function (config) {
         interval
       })
 
-      //get free interval
-      let freeInterval = null
-      for (let i = 0; i < interval.length; i++) {
-        if ( interval[i] > part) {
-          freeInterval = interval[i]
-          break
-        }
-      }
+      let freeInterval = getFirstFreeInterval(interval, part)
 
       //for initial run we're gonna go through all resolutions
       //to setup the start date
-      if (initialRun && next) date = next({
-        date,
-        initialRun
-      })
-
-      //if the wanted recurrence is not possible to setup
+      //or if the wanted recurrence is not possible to setup
       //because the date date would be smaller than
       //the actual date we move on to next resolution
-      else if (!freeInterval && next) date = next({
+      if (!freeInterval || initialRun && next) date = next({
         date,
         initialRun,
-        forceAdvance: true
+        forceAdvance: !(freeInterval || initialRun)
       })
 
       //setting up the defined date part
@@ -189,7 +145,7 @@ export default function (config) {
     Object.keys(layers).forEach(e =>
       !initialRun &&
       isLowerResolutionAndNotDefault(layers[e].resolution) ?
-      clear(date, layers[e].resolution) : true
+      clearResolution(date, layers[e].resolution) : true
     )
 
     //console.log(`Leaving ${resolution} with ${date}`)
